@@ -1,0 +1,285 @@
+/* ==========================================================================
+   Artivo prototype styles (Bootstrap 5.3 overrides)
+   Palette: orange #FF6200, yellow #FFCC00, charcoal #1A1A1A, white #FFFFFF
+   ========================================================================== */
+
+:root {
+    --artivo-orange: #FF6200;
+    --artivo-orange-dark: #E05600;
+    --artivo-orange-text: #C24A00; /* darker orange for small text on white (contrast 4.5:1) */
+    --artivo-yellow: #FFCC00;
+    --artivo-dark: #1A1A1A;
+    --artivo-muted: #6b6b6b;
+    --artivo-line: #d6d6d6;
+
+    /* Re-point Bootstrap's theme colours to the brand palette */
+    --bs-primary: #FF6200;
+    --bs-primary-rgb: 255, 98, 0;
+    --bs-warning: #FFCC00;
+    --bs-warning-rgb: 255, 204, 0;
+    --bs-dark: #1A1A1A;
+    --bs-dark-rgb: 26, 26, 26;
+    --bs-body-color: #1A1A1A;
+    --bs-body-color-rgb: 26, 26, 26;
+    --bs-link-color: #1A1A1A;
+    --bs-link-color-rgb: 26, 26, 26;
+    --bs-link-hover-color: #C24A00;
+    --bs-link-hover-color-rgb: 194, 74, 0;
+    --bs-body-font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    --bs-body-font-size: 0.9375rem;
+}
+
+@media (min-width: 1400px) {
+    .container { max-width: 1280px; }
+}
+
+body { overflow-x: hidden; }
+a { text-decoration: none; }
+
+/* ---- Buttons ---------------------------------------------------------- */
+.btn { font-weight: 600; border-radius: 6px; }
+
+.btn-primary {
+    --bs-btn-color: #fff;
+    --bs-btn-bg: #FF6200;
+    --bs-btn-border-color: #FF6200;
+    --bs-btn-hover-color: #fff;
+    --bs-btn-hover-bg: #E05600;
+    --bs-btn-hover-border-color: #E05600;
+    --bs-btn-active-color: #fff;
+    --bs-btn-active-bg: #C94E00;
+    --bs-btn-active-border-color: #C94E00;
+    --bs-btn-focus-shadow-rgb: 255, 98, 0;
+    --bs-btn-disabled-bg: #FF6200;
+    --bs-btn-disabled-border-color: #FF6200;
+}
+
+.btn-outline-primary {
+    --bs-btn-color: #C24A00;
+    --bs-btn-border-color: #FF6200;
+    --bs-btn-hover-color: #fff;
+    --bs-btn-hover-bg: #FF6200;
+    --bs-btn-hover-border-color: #FF6200;
+    --bs-btn-active-color: #fff;
+    --bs-btn-active-bg: #E05600;
+    --bs-btn-active-border-color: #E05600;
+    --bs-btn-focus-shadow-rgb: 255, 98, 0;
+}
+
+.btn-outline-dark {
+    --bs-btn-color: #1A1A1A;
+    --bs-btn-border-color: #1A1A1A;
+    --bs-btn-hover-bg: #1A1A1A;
+    --bs-btn-hover-border-color: #1A1A1A;
+    --bs-btn-hover-color: #fff;
+    --bs-btn-active-bg: #1A1A1A;
+    --bs-btn-active-border-color: #1A1A1A;
+    --bs-btn-active-color: #fff;
+}
+
+.btn-outline-warning {
+    --bs-btn-color: #FFCC00;
+    --bs-btn-border-color: #FFCC00;
+    --bs-btn-hover-color: #1A1A1A;
+    --bs-btn-hover-bg: #FFCC00;
+    --bs-btn-hover-border-color: #FFCC00;
+    --bs-btn-active-color: #1A1A1A;
+    --bs-btn-active-bg: #FFCC00;
+    --bs-btn-active-border-color: #FFCC00;
+}
+
+.btn-outline-secondary {
+    --bs-btn-color: #5c5c5c;
+    --bs-btn-border-color: #c4c4c4;
+    --bs-btn-hover-bg: #f5f5f5;
+    --bs-btn-hover-color: #1A1A1A;
+    --bs-btn-hover-border-color: #9a9a9a;
+    --bs-btn-active-bg: #f5f5f5;
+    --bs-btn-active-color: #1A1A1A;
+    --bs-btn-active-border-color: #9a9a9a;
+    font-weight: 400;
+}
+
+.btn-dark {
+    --bs-btn-bg: #1A1A1A;
+    --bs-btn-border-color: #1A1A1A;
+    --bs-btn-color: #FFCC00;
+    --bs-btn-hover-bg: #000;
+    --bs-btn-hover-border-color: #000;
+    --bs-btn-hover-color: #FFCC00;
+}
+
+.btn-link { color: var(--artivo-muted); font-weight: 600; font-size: 0.8125rem; }
+.btn-link:hover { color: var(--artivo-orange-text); }
+
+.form-control, .form-select { border-color: #c4c4c4; border-radius: 6px; font-size: 0.875rem; }
+.form-control:focus, .form-select:focus {
+    border-color: var(--artivo-orange);
+    box-shadow: 0 0 0 0.2rem rgba(255, 98, 0, 0.2);
+}
+.form-check-input:checked { background-color: var(--artivo-orange); border-color: var(--artivo-orange); }
+.form-check-input:focus { border-color: var(--artivo-orange); box-shadow: 0 0 0 0.2rem rgba(255, 98, 0, 0.2); }
+
+/* ---- Navbar ----------------------------------------------------------- */
+.artivo-nav { padding-block: 0.65rem; }
+.artivo-nav .navbar-brand { padding: 0; }
+.artivo-nav .nav-link { color: #fff; font-weight: 600; font-size: 0.875rem; }
+.artivo-nav .nav-link:hover { color: var(--artivo-yellow); }
+.artivo-nav .nav-link.active { color: var(--artivo-yellow); }
+.artivo-search { width: 100%; }
+.artivo-search .form-control { border: 0; background: #fff; padding: 0.5rem 1.1rem; }
+@media (min-width: 992px) {
+    .artivo-search { width: 340px; }
+}
+@media (min-width: 1200px) {
+    .artivo-search { width: 420px; }
+}
+.artivo-logo { display: block; width: auto; max-width: 100%; }
+
+/* ---- Footer ----------------------------------------------------------- */
+.artivo-footer { background: var(--artivo-dark); color: rgba(255, 255, 255, 0.75); }
+.footer-tagline { font-size: 0.8125rem; color: rgba(255, 255, 255, 0.7); }
+.footer-links a { color: rgba(255, 255, 255, 0.8); font-size: 0.8125rem; }
+.footer-links a:hover { color: var(--artivo-yellow); }
+.footer-links .list-inline-item:not(:last-child) { margin-right: 1.5rem; }
+.proto-note { font-size: 0.75rem; color: rgba(255, 255, 255, 0.6); }
+
+/* ---- Image placeholders (stand in for artwork until real images exist) - */
+.art-ph {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    background: rgba(255, 204, 0, 0.14);
+    border: 1px solid rgba(255, 204, 0, 0.7);
+    color: rgba(26, 26, 26, 0.62);
+    font-size: 0.8125rem;
+    text-align: center;
+    padding: 0.25rem;
+}
+a.art-ph:hover { background: rgba(255, 204, 0, 0.26); color: var(--artivo-dark); }
+.art-ph--tile { aspect-ratio: auto; height: 100px; font-weight: 600; color: var(--artivo-dark); }
+.art-ph--hero { aspect-ratio: 600 / 380; }
+.art-ph--wide { aspect-ratio: 700 / 520; }
+.art-ph--thumb { aspect-ratio: 160 / 100; font-size: 0.75rem; }
+.art-ph--cart { width: 100px; height: 100px; flex-shrink: 0; aspect-ratio: auto; }
+.art-ph--dark {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(255, 255, 255, 0.25);
+    color: rgba(255, 255, 255, 0.7);
+}
+
+/* ---- Hero & call to action -------------------------------------------- */
+.hero { background: var(--artivo-dark); color: #fff; }
+.eyebrow { font-size: 0.75rem; font-weight: 600; letter-spacing: 0.08em; color: var(--artivo-yellow); }
+.hero-title { font-size: calc(1.75rem + 1.6vw); font-weight: 700; line-height: 1.15; color: #fff; }
+@media (min-width: 1200px) {
+    .hero-title { font-size: 2.75rem; }
+}
+.hero-lead { font-size: 1rem; color: rgba(255, 255, 255, 0.8); max-width: 520px; }
+
+.seller-cta { background: var(--artivo-yellow); color: var(--artivo-dark); }
+.seller-cta h2 { font-size: 1.625rem; font-weight: 700; }
+
+/* ---- Section headings ------------------------------------------------- */
+.section-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; gap: 1rem; }
+.section-head h2 { font-size: 1.5rem; font-weight: 600; margin: 0; }
+.view-all { color: var(--artivo-orange-text); font-weight: 600; font-size: 0.875rem; white-space: nowrap; }
+.view-all:hover { text-decoration: underline; }
+.page-title { font-size: calc(1.6rem + 0.8vw); font-weight: 700; }
+@media (min-width: 1200px) {
+    .page-title { font-size: 2rem; }
+}
+
+/* ---- Artwork card ----------------------------------------------------- */
+.artwork-card { background: transparent; }
+.artwork-title { font-size: 0.9375rem; font-weight: 600; }
+.artwork-title a { color: var(--artivo-dark); overflow-wrap: anywhere; }
+.artwork-title a:hover { color: var(--artivo-orange-text); }
+.artwork-artist { font-size: 0.8125rem; color: var(--artivo-muted); }
+.price { font-weight: 600; color: var(--artivo-orange-text); }
+.artwork-card .btn-sm { --bs-btn-padding-y: 0.2rem; --bs-btn-padding-x: 0.75rem; --bs-btn-font-size: 0.75rem; border-radius: 4px; }
+
+/* ---- Top artists ------------------------------------------------------ */
+.artist-link { display: block; color: var(--artivo-dark); }
+.artist-link:hover .artist-name { color: var(--artivo-orange-text); }
+.avatar {
+    display: block;
+    width: 96px;
+    height: 96px;
+    margin: 0 auto 0.5rem;
+    border-radius: 50%;
+    background: rgba(255, 204, 0, 0.25);
+    border: 1px solid var(--artivo-yellow);
+}
+.artist-name { font-weight: 600; font-size: 0.875rem; }
+.artist-count { font-size: 0.75rem; color: var(--artivo-muted); }
+
+/* ---- Breadcrumb, filters, results ------------------------------------- */
+.artivo-breadcrumb { font-size: 0.8125rem; --bs-breadcrumb-divider-color: var(--artivo-muted); }
+.artivo-breadcrumb a { color: var(--artivo-muted); }
+.artivo-breadcrumb a:hover { color: var(--artivo-orange-text); }
+.artivo-breadcrumb .active { color: var(--artivo-muted); }
+.filter-title { font-size: 1rem; font-weight: 600; }
+.filter-label { font-size: 0.8125rem; font-weight: 600; color: #4d4d4d; float: none; width: auto; margin-bottom: 0.5rem; }
+.form-check-label { font-size: 0.875rem; color: #4d4d4d; }
+.results-count { font-size: 0.875rem; color: #4d4d4d; }
+.btn-sort { min-width: 160px; text-align: left; font-size: 0.875rem; }
+.dropdown-item:active { background: var(--artivo-orange); }
+
+/* ---- Pagination ------------------------------------------------------- */
+.artivo-pagination { gap: 8px; --bs-pagination-border-radius: 4px; }
+.artivo-pagination .page-link {
+    width: 36px;
+    height: 36px;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    color: #4d4d4d;
+    border: 1px solid #c4c4c4;
+    border-radius: 4px !important;
+    margin: 0;
+}
+.artivo-pagination .page-link:hover { background: #f5f5f5; color: var(--artivo-dark); }
+.artivo-pagination .page-link:focus { box-shadow: 0 0 0 0.2rem rgba(255, 98, 0, 0.25); }
+.artivo-pagination .active .page-link { background: var(--artivo-dark); border-color: var(--artivo-dark); color: #fff; }
+.artivo-pagination .disabled .page-link { color: #9a9a9a; background: #fff; }
+
+/* ---- Artwork detail --------------------------------------------------- */
+.detail-title { font-size: calc(1.5rem + 0.6vw); font-weight: 700; }
+@media (min-width: 1200px) {
+    .detail-title { font-size: 2rem; }
+}
+.detail-price { font-size: 2.25rem; font-weight: 700; color: var(--artivo-orange-text); line-height: 1.1; }
+.text-secondary-dark { color: #4d4d4d; }
+.rating { color: var(--artivo-muted); }
+.wishlist { font-size: 0.875rem; }
+.details-box { border: 1px solid #c4c4c4; border-radius: 8px; padding: 1rem; }
+.detail-row { display: flex; justify-content: space-between; gap: 1rem; margin-bottom: 0.6rem; font-size: 0.8125rem; }
+.detail-row:last-child { margin-bottom: 0; }
+.detail-row dt { font-weight: 400; color: var(--artivo-muted); }
+.detail-row dd { margin: 0; font-weight: 600; color: #4d4d4d; text-align: right; }
+
+/* ---- Cart ------------------------------------------------------------- */
+.cart-item { border: 1px solid #c4c4c4; border-radius: 8px; padding: 1rem; }
+.cart-title { font-size: 1rem; font-weight: 600; }
+.cart-title a { color: var(--artivo-dark); }
+.cart-title a:hover { color: var(--artivo-orange-text); }
+.remove-link { font-weight: 400; }
+.order-summary {
+    background: rgba(255, 204, 0, 0.1);
+    border: 1px solid rgba(255, 204, 0, 0.6);
+    border-radius: 8px;
+    padding: 1.5rem;
+}
+
+/* ---- Small screens ---------------------------------------------------- */
+@media (max-width: 575.98px) {
+    .cart-item { flex-wrap: wrap; }
+    .cart-item .text-end { margin-left: auto; }
+    .seller-cta h2 { font-size: 1.35rem; }
+}

@@ -1,6 +1,6 @@
 /* ==========================================================================
    Artivo admin styles (loaded after artivo.css, which holds the brand variables)
-   Layout from the wireframe: dark sidebar 240px, yellow top bar, white content.
+   Layout from the wireframe: dark sidebar 240px, orange top bar, white content.
    ========================================================================== */
 
 .admin-body { background: #fff; }
@@ -14,8 +14,8 @@
 .admin-offcanvas { position: fixed; height: 100%; --bs-offcanvas-width: 260px; }
 .admin-offcanvas-close { position: absolute; top: 12px; right: 12px; }
 .admin-brand { display: flex; flex-direction: column; gap: 8px; text-decoration: none; color: #fff; margin-bottom: 24px; }
-.admin-logo-chip { display: inline-flex; border-radius: 8px; padding: 6px 10px; align-self: flex-start; }
-.admin-logo-chip img { display: block; max-width: 100%; height: 40px; width: auto; }
+.admin-logo { display: inline-flex; align-self: flex-start; }
+.admin-logo img { display: block; max-width: 100%; height: 44px; width: auto; }
 .admin-brand-label { font-size: .8125rem; color: #cfcfcf; letter-spacing: .04em; }
 .admin-nav-link {
     color: #fff; border-radius: 8px; padding: 10px 14px; font-weight: 600; margin-bottom: 4px;
@@ -31,11 +31,15 @@
     background: var(--artivo-orange); color: var(--artivo-dark); display: flex; align-items: center; gap: 12px;
     padding: 0 24px; height: 64px; position: sticky; top: 0; z-index: 1020;
 }
-.admin-topbar-title { font-size: 1.25rem; font-weight: 700; margin: 0; color:#fff; }
-.admin-menu-btn { padding: 4px 8px; border: 1px solid rgba(26, 26, 26, .4); background: transparent; }
+.admin-topbar-title { font-size: 1.25rem; font-weight: 700; margin: 0; }
+.admin-menu-btn { padding: 4px 8px; border: 1px solid rgba(26, 26, 26, .5); background: transparent; }
 .admin-search { width: 260px; }
 .admin-search .form-control { background: #fff; border-color: transparent; }
-.admin-user { display: flex; align-items: center; gap: 8px; font-weight: 600; color:#fff;}
+.admin-user { display: flex; align-items: center; gap: 8px; font-weight: 600; }
+.admin-user-btn { display: inline-flex; align-items: center; gap: 8px; background: transparent; border: 0; color: var(--artivo-dark); font-weight: 600; padding: 4px; }
+.admin-user-name { max-width: 140px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.admin-inline-form { display: inline-flex; gap: 6px; align-items: center; justify-content: flex-end; }
+.admin-inline-form .form-select { width: auto; min-width: 110px; }
 .admin-avatar { width: 34px; height: 34px; border-radius: 50%; background: var(--artivo-dark); display: inline-block; }
 .admin-content { padding: 24px; width: 100%; max-width: 1024px; margin: 0 auto; flex: 1 1 auto; }
 
@@ -47,10 +51,13 @@
 .admin-stat-note { font-size: .8125rem; color: var(--artivo-orange-text); font-weight: 600; }
 .admin-link { color: var(--artivo-orange-text); font-weight: 600; font-size: .875rem; }
 
-/* ---- Chart placeholder ---- */
-.admin-chart { display: flex; align-items: flex-end; gap: 8px; height: 200px; border-bottom: 1px solid var(--artivo-line); padding-bottom: 0; }
-.admin-bar { flex: 1 1 0; background: var(--artivo-yellow); border-radius: 4px 4px 0 0; }
-.admin-bar:nth-child(even) { background: var(--artivo-orange); }
+/* ---- Sales chart (data from the database) ---- */
+.admin-chart { display: flex; align-items: flex-end; gap: 12px; padding-top: 8px; }
+.admin-bar-col { flex: 1 1 0; display: flex; flex-direction: column; align-items: stretch; min-width: 0; }
+.admin-bar-track { height: 180px; display: flex; align-items: flex-end; border-bottom: 1px solid var(--artivo-line); }
+.admin-bar { display: block; width: 100%; background: var(--artivo-orange); border-radius: 4px 4px 0 0; min-height: 0; }
+.admin-bar-col:nth-child(odd) .admin-bar { background: var(--artivo-yellow); }
+.admin-bar-label { text-align: center; font-size: .75rem; color: var(--artivo-muted); margin-top: 6px; }
 .admin-chart-note { font-size: .75rem; color: var(--artivo-muted); margin-top: 6px; }
 
 /* ---- Top selling list ---- */
@@ -62,6 +69,8 @@
 .admin-thumb { width: 40px; height: 40px; flex: 0 0 40px; border-radius: 6px; display: inline-block; }
 
 /* ---- Tables ---- */
+/* Positioned so visually-hidden labels inside the table are clipped with it (no page-level sideways scroll on phones). */
+.table-responsive { position: relative; }
 .admin-table { --bs-table-bg: transparent; font-size: .875rem; }
 .admin-table thead th {
     background: #f4f4f4; font-size: .75rem; text-transform: uppercase; letter-spacing: .04em; color: #444;
@@ -84,7 +93,9 @@
 .admin-chip-bad { background: #fde8e8; color: #9b1c1c; }
 
 /* ---- Pagination ---- */
-.admin-pagination .page-link { color: var(--artivo-dark); border-color: var(--artivo-line); }
+.admin-pagination { gap: 4px; }
+.admin-pagination .page-link { color: var(--artivo-dark); border-color: var(--artivo-line); border-radius: 4px; }
+.admin-pagination .disabled .page-link { color: #9a9a9a; }
 .admin-pagination .page-item.active .page-link { background: var(--artivo-orange); border-color: var(--artivo-orange); color: #fff; }
 
 /* ---- Mobile ---- */
@@ -94,7 +105,7 @@
     .admin-stat-value { font-size: 1.375rem; }
 }
 
-/* Hamburger icon in dark stroke so it shows on the yellow top bar */
+/* Hamburger icon in dark stroke so it shows on the orange top bar */
 .admin-menu-btn .navbar-toggler-icon {
     background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='%231A1A1A' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2.5' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
 }

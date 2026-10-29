@@ -179,7 +179,7 @@ a.art-ph:hover { background: rgba(255, 204, 0, 0.26); color: var(--artivo-dark);
 }
 .hero-lead { font-size: 1rem; color: rgba(255, 255, 255, 0.8); max-width: 520px; }
 
-.seller-cta { background: var(--artivo-orange); color: var(--artivo-dark); }
+.seller-cta { background: var(--artivo-yellow); color: var(--artivo-dark); }
 .seller-cta h2 { font-size: 1.625rem; font-weight: 700; }
 
 /* ---- Section headings ------------------------------------------------- */
@@ -283,3 +283,10 @@ a.art-ph:hover { background: rgba(255, 204, 0, 0.26); color: var(--artivo-dark);
     .cart-item .text-end { margin-left: auto; }
     .seller-cta h2 { font-size: 1.35rem; }
 }
+
+/* ---- Login / register modal tabs and dropdown (database version) ---- */
+.artivo-modal-tabs .nav-link { color: var(--artivo-dark); font-weight: 600; border: 1px solid var(--artivo-line); margin-right: 8px; }
+.artivo-modal-tabs .nav-link.active { background: var(--artivo-orange); border-color: var(--artivo-orange); color: #fff; }
+.artivo-nav .dropdown-menu .dropdown-item { font-size: 0.9rem; }
+.artivo-nav .dropdown-menu .dropdown-item:active { background: var(--artivo-orange); }
+.dropdown-item.active { background: var(--artivo-orange); color: #fff; }

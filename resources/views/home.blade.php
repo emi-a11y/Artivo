@@ -32,7 +32,7 @@
         <div class="row row-cols-2 row-cols-md-4 g-3">
             @foreach ($categories as $category)
                 <div class="col">
-                    <a href="{{ route('browse', ['category' => $category]) }}" class="art-ph art-ph--tile">{{ $category }}</a>
+                    <a href="{{ route('browse', ['category' => $category->name]) }}" class="art-ph art-ph--tile">{{ $category->name }}</a>
                 </div>
             @endforeach
         </div>
@@ -62,8 +62,8 @@
                 <div class="col">
                     <a href="{{ route('page.show', 'artists') }}" class="artist-link">
                         <span class="avatar" aria-hidden="true"></span>
-                        <span class="d-block artist-name">{{ $artist['name'] }}</span>
-                        <span class="d-block artist-count">{{ $artist['count'] }} artworks</span>
+                        <span class="d-block artist-name">{{ $artist->name }}</span>
+                        <span class="d-block artist-count">{{ $artist->artworks_count }} {{ \Illuminate\Support\Str::plural('artwork', $artist->artworks_count) }}</span>
                     </a>
                 </div>
             @endforeach

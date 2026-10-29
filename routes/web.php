@@ -9,6 +9,7 @@ use App\Http\Controllers\PageController;
 use App\Http\Controllers\WishlistController;
 use App\Http\Middleware\EnsureAdmin;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\OrderController;
 
 /*
 |--------------------------------------------------------------------------
@@ -33,6 +34,9 @@ Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
 Route::post('/login', [AuthController::class, 'login'])->name('login.attempt');
 Route::post('/register', [AuthController::class, 'register'])->name('register');
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+Route::get('/orders', [OrderController::class, 'index'])
+    ->middleware('auth')
+    ->name('orders');
 
 // ---- Admin (Admin role only) ----
 Route::prefix('admin')->name('admin.')->middleware(['auth', EnsureAdmin::class])->group(function () {

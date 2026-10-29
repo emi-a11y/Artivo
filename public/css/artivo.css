@@ -179,7 +179,7 @@ a.art-ph:hover { background: rgba(255, 204, 0, 0.26); color: var(--artivo-dark);
 }
 .hero-lead { font-size: 1rem; color: rgba(255, 255, 255, 0.8); max-width: 520px; }
 
-.seller-cta { background: var(--artivo-yellow); color: var(--artivo-dark); }
+.seller-cta { background: var(--artivo-orange); color: var(--artivo-dark); }
 .seller-cta h2 { font-size: 1.625rem; font-weight: 700; }
 
 /* ---- Section headings ------------------------------------------------- */

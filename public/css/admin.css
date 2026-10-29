@@ -31,11 +31,11 @@
     background: var(--artivo-orange); color: var(--artivo-dark); display: flex; align-items: center; gap: 12px;
     padding: 0 24px; height: 64px; position: sticky; top: 0; z-index: 1020;
 }
-.admin-topbar-title { font-size: 1.25rem; font-weight: 700; margin: 0; }
+.admin-topbar-title { font-size: 1.25rem; font-weight: 700; margin: 0; color:#fff; }
 .admin-menu-btn { padding: 4px 8px; border: 1px solid rgba(26, 26, 26, .4); background: transparent; }
 .admin-search { width: 260px; }
 .admin-search .form-control { background: #fff; border-color: transparent; }
-.admin-user { display: flex; align-items: center; gap: 8px; font-weight: 600; }
+.admin-user { display: flex; align-items: center; gap: 8px; font-weight: 600; color:#fff;}
 .admin-avatar { width: 34px; height: 34px; border-radius: 50%; background: var(--artivo-dark); display: inline-block; }
 .admin-content { padding: 24px; width: 100%; max-width: 1024px; margin: 0 auto; flex: 1 1 auto; }
 

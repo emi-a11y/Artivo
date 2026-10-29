@@ -22,12 +22,15 @@
             <div class="card h-100">
                 <div class="card-body">
                     <h2 class="admin-card-title">Sales Overview</h2>
-                    <div class="admin-chart" role="img" aria-label="Sample bar chart of monthly sales (placeholder)">
-                        @foreach ([38, 52, 44, 66, 58, 80, 72, 94, 70, 86, 100, 90] as $h)
-                            <span class="admin-bar" style="height: {{ $h }}%"></span>
+                    <div class="admin-chart" role="img" aria-label="Bar chart of paid sales for the last six months">
+                        @foreach ($chart as $bar)
+                            <div class="admin-bar-col" title="{{ $bar['label'] }}: ${{ number_format($bar['value'], 2) }}">
+                                <div class="admin-bar-track"><span class="admin-bar" style="height: {{ $bar['height'] }}%"></span></div>
+                                <span class="admin-bar-label">{{ $bar['label'] }}</span>
+                            </div>
                         @endforeach
                     </div>
-                    <div class="admin-chart-note">Placeholder chart (sample values)</div>
+                    <div class="admin-chart-note">Paid orders per month, last six months</div>
                 </div>
             </div>
         </div>
@@ -36,13 +39,15 @@
                 <div class="card-body">
                     <h2 class="admin-card-title">Top Selling Artworks</h2>
                     <ul class="list-unstyled admin-top mb-0">
-                        @foreach ($topSelling as $row)
+                        @forelse ($topSelling as $art)
                             <li>
                                 <span class="art-ph admin-thumb" aria-hidden="true"></span>
-                                <span class="admin-top-text"><strong>{{ $row['title'] }}</strong><small>{{ $row['artist'] }}</small></span>
-                                <span class="admin-top-sales">{{ $row['sales'] }} sales</span>
+                                <span class="admin-top-text"><strong>{{ $art->title }}</strong><small>{{ $art->artist->name }}</small></span>
+                                <span class="admin-top-sales">{{ $art->order_items_count }} {{ \Illuminate\Support\Str::plural('sale', $art->order_items_count) }}</span>
                             </li>
-                        @endforeach
+                        @empty
+                            <li class="text-muted">No sales yet.</li>
+                        @endforelse
                     </ul>
                 </div>
             </div>
@@ -54,7 +59,7 @@
                         <h2 class="admin-card-title mb-0">Recent Orders</h2>
                         <a class="admin-link" href="{{ route('admin.orders') }}">View all</a>
                     </div>
-                    @include('admin.partials.orders-table', ['orders' => $recentOrders])
+                    @include('admin.partials.orders-table', ['orders' => $recentOrders, 'editable' => false])
                 </div>
             </div>
         </div>

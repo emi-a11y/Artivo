@@ -34,7 +34,7 @@
         </div>
     </div>
 
-    <div class="toast-container position-fixed bottom-0 end-0 p-3">
+    <div class="toast-container position-fixed bottom-0 end-0 p-3" id="toastHost" data-flash="{{ session('status') }}">
         <div id="protoToast" class="toast align-items-center text-bg-dark border-0" role="status" aria-live="polite" aria-atomic="true">
             <div class="d-flex">
                 <div class="toast-body" id="protoToastBody"></div>

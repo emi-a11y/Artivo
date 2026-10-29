@@ -13,9 +13,7 @@
     <h1 class="page-title mb-4">Browse Artworks</h1>
 
     @if (request('q'))
-        <div class="alert alert-info py-2 small" role="status">
-            Prototype: you searched for "{{ request('q') }}", but results below are static sample data.
-        </div>
+        <p class="text-secondary-dark" role="status">Showing results for "{{ request('q') }}".</p>
     @endif
 
     <div class="row g-4 g-xl-5">
@@ -26,13 +24,15 @@
 
             <div class="collapse d-lg-block" id="filters">
                 <h2 class="filter-title mb-3 d-none d-lg-block">Filters</h2>
-                <form onsubmit="return false">
+                <form action="{{ route('browse') }}" method="get">
+                    @if (request('q'))<input type="hidden" name="q" value="{{ request('q') }}">@endif
+                    @if ($sort !== 'newest')<input type="hidden" name="sort" value="{{ $sort }}">@endif
                     <fieldset class="mb-3">
                         <legend class="filter-label">Category</legend>
                         @foreach ($categories as $category)
                             <div class="form-check">
-                                <input class="form-check-input" type="checkbox" id="cat{{ str_replace(' ', '', $category) }}">
-                                <label class="form-check-label" for="cat{{ str_replace(' ', '', $category) }}">{{ $category }}</label>
+                                <input class="form-check-input" type="checkbox" name="category[]" value="{{ $category->name }}" id="cat{{ $category->id }}" @checked(in_array($category->name, $selectedCategories))>
+                                <label class="form-check-label" for="cat{{ $category->id }}">{{ $category->name }}</label>
                             </div>
                         @endforeach
                     </fieldset>
@@ -41,10 +41,10 @@
                         <legend class="filter-label">Price</legend>
                         <div class="row g-2">
                             <div class="col-6">
-                                <input type="number" min="0" class="form-control" placeholder="Min" aria-label="Minimum price">
+                                <input type="number" min="0" name="min" value="{{ request('min') }}" class="form-control" placeholder="Min" aria-label="Minimum price">
                             </div>
                             <div class="col-6">
-                                <input type="number" min="0" class="form-control" placeholder="Max" aria-label="Maximum price">
+                                <input type="number" min="0" name="max" value="{{ request('max') }}" class="form-control" placeholder="Max" aria-label="Maximum price">
                             </div>
                         </div>
                     </fieldset>
@@ -53,12 +53,13 @@
                         <legend class="filter-label">Genre</legend>
                         @foreach ($genres as $genre)
                             <div class="form-check">
-                                <input class="form-check-input" type="checkbox" id="genre{{ str_replace(' ', '', $genre) }}">
-                                <label class="form-check-label" for="genre{{ str_replace(' ', '', $genre) }}">{{ $genre }}</label>
+                                <input class="form-check-input" type="checkbox" name="genre[]" value="{{ $genre->name }}" id="genre{{ $genre->id }}" @checked(in_array($genre->name, $selectedGenres))>
+                                <label class="form-check-label" for="genre{{ $genre->id }}">{{ $genre->name }}</label>
                             </div>
                         @endforeach
                     </fieldset>
-                    <button type="button" class="btn btn-primary w-100" data-proto="Filters are not applied in this prototype. Results are static sample data.">Apply Filters</button>
+                    <button type="submit" class="btn btn-primary w-100">Apply Filters</button>
+                    <a href="{{ route('browse') }}" class="btn btn-link w-100 mt-1">Clear filters</a>
                 </form>
             </div>
         </aside>
@@ -66,39 +67,30 @@
         {{-- Results --}}
         <section class="col-lg-9 col-xl-10" aria-label="Artwork results">
             <div class="d-flex justify-content-between align-items-center mb-4">
-                <span class="results-count">{{ $total }} results</span>
+                <span class="results-count">{{ $artworks->total() }} {{ \Illuminate\Support\Str::plural('result', $artworks->total()) }}</span>
                 <div class="dropdown">
                     <button class="btn btn-outline-secondary btn-sort dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        Sort: Newest
+                        Sort: {{ $sorts[$sort] }}
                     </button>
                     <ul class="dropdown-menu dropdown-menu-end">
-                        <li><button class="dropdown-item" type="button" data-proto="Sorting is not applied in this prototype.">Newest</button></li>
-                        <li><button class="dropdown-item" type="button" data-proto="Sorting is not applied in this prototype.">Price: low to high</button></li>
-                        <li><button class="dropdown-item" type="button" data-proto="Sorting is not applied in this prototype.">Price: high to low</button></li>
-                        <li><button class="dropdown-item" type="button" data-proto="Sorting is not applied in this prototype.">Most popular</button></li>
+                        @foreach ($sorts as $key => $label)
+                            <li><a class="dropdown-item {{ $sort === $key ? 'active' : '' }}" href="{{ request()->fullUrlWithQuery(['sort' => $key, 'page' => null]) }}">{{ $label }}</a></li>
+                        @endforeach
                     </ul>
                 </div>
             </div>
 
-            <div class="row row-cols-2 row-cols-md-3 row-cols-xl-4 g-4">
-                @foreach ($artworks as $art)
-                    <div class="col">@include('partials.artwork-card', ['art' => $art])</div>
-                @endforeach
-            </div>
-
-            <nav class="mt-5" aria-label="Artwork pages">
-                <ul class="pagination artivo-pagination justify-content-center flex-wrap mb-0">
-                    @foreach ($pages as $p)
-                        <li class="page-item {{ $p['active'] ? 'active' : '' }} {{ $p['disabled'] ? 'disabled' : '' }}">
-                            @if ($p['disabled'])
-                                <span class="page-link" aria-label="{{ $p['aria'] }}">{{ $p['label'] }}</span>
-                            @else
-                                <a class="page-link" href="{{ route('browse', ['page' => $p['page']]) }}" aria-label="{{ $p['aria'] }}" {!! $p['active'] ? 'aria-current="page"' : '' !!}>{{ $p['label'] }}</a>
-                            @endif
-                        </li>
+            @if ($artworks->isEmpty())
+                <div class="alert alert-light border text-center py-5" role="status">No artworks match these filters. <a href="{{ route('browse') }}">Clear filters</a></div>
+            @else
+                <div class="row row-cols-2 row-cols-md-3 row-cols-xl-4 g-4">
+                    @foreach ($artworks as $art)
+                        <div class="col">@include('partials.artwork-card', ['art' => $art])</div>
                     @endforeach
-                </ul>
-            </nav>
+                </div>
+            @endif
+
+            @include('partials.paginator', ['paginator' => $artworks, 'navClass' => 'mt-5', 'class' => 'artivo-pagination justify-content-center'])
         </section>
     </div>
 </div>

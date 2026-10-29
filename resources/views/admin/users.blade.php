@@ -14,21 +14,28 @@
                     <tbody>
                         @foreach ($users as $u)
                             <tr>
-                                <td>{{ $u['name'] }}</td>
-                                <td>{{ $u['email'] }}</td>
-                                <td>{{ $u['role'] }}</td>
-                                <td>{{ $u['joined'] }}</td>
-                                <td>@include('admin.partials.status', ['status' => $u['status']])</td>
+                                <td>{{ $u->name }}</td>
+                                <td>{{ $u->email }}</td>
+                                <td>{{ $u->role }}</td>
+                                <td class="text-nowrap">{{ $u->created_at->format('M Y') }}</td>
+                                <td>@include('admin.partials.status', ['status' => $u->status])</td>
                                 <td class="text-end">
-                                    <button type="button" class="btn btn-sm btn-outline-dark" data-proto="Prototype: viewing {{ $u['name'] }} is simulated.">View</button>
-                                    <button type="button" class="btn btn-sm btn-outline-dark" data-proto="Prototype: {{ $u['name'] }} was not blocked. Nothing is saved.">Block</button>
+                                    @if ($u->isAdmin())
+                                        <span class="text-muted small">Admin</span>
+                                    @else
+                                        <form action="{{ route('admin.users.status', $u->id) }}" method="post" class="d-inline">
+                                            @csrf
+                                            @method('PATCH')
+                                            <button type="submit" class="btn btn-sm btn-outline-dark">{{ $u->status === 'Blocked' ? 'Unblock' : 'Block' }}</button>
+                                        </form>
+                                    @endif
                                 </td>
                             </tr>
                         @endforeach
                     </tbody>
                 </table>
             </div>
-            @include('admin.partials.pagination', ['pages' => $pages])
+            @include('partials.paginator', ['paginator' => $users, 'navClass' => 'mt-3', 'class' => 'admin-pagination justify-content-end'])
         </div>
     </div>
 @endsection

@@ -14,6 +14,6 @@
                 <li class="list-inline-item"><a href="{{ route('page.show', 'privacy') }}">Privacy</a></li>
             </ul>
         </div>
-        <p class="proto-note mb-0 mt-3">Static prototype for Laboratory Activity 2. Sample data only; nothing is saved.</p>
+        <p class="proto-note mb-0 mt-3">School project prototype. Payments and file downloads are simulated.</p>
     </div>
 </footer>

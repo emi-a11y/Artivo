@@ -28,7 +28,7 @@ Route::post('/cart/add/{id}', [CartController::class, 'add'])->whereNumber('id')
 Route::delete('/cart/{id}', [CartController::class, 'remove'])->whereNumber('id')->name('cart.remove');
 Route::post('/checkout', [CartController::class, 'checkout'])->name('checkout');
 Route::post('/wishlist/{id}', [WishlistController::class, 'toggle'])->whereNumber('id')->name('wishlist.toggle');
-
+Route::get('/wishlist', [WishlistController::class, 'index'])->middleware('auth')->name('wishlist');
 // ---- Accounts ----
 Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
 Route::post('/login', [AuthController::class, 'login'])->name('login.attempt');

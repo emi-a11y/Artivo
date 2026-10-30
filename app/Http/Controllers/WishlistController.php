@@ -3,9 +3,22 @@
 namespace App\Http\Controllers;
 
 use App\Models\Artwork;
+use Illuminate\Http\Request;
 
 class WishlistController extends Controller
 {
+    /** My Wishlist page: the published artworks the logged-in user saved, newest first. */
+    public function index(Request $request)
+    {
+        $artworks = $request->user()->wishlist()
+            ->with('artist')
+            ->where('artworks.status', 'Published')
+            ->orderByDesc('wishlists.created_at')
+            ->get();
+
+        return view('wishlist', ['artworks' => $artworks]);
+    }
+
     public function toggle(int $id)
     {
         $artwork = Artwork::where('status', 'Published')->findOrFail($id);

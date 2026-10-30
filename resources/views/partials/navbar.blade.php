@@ -38,6 +38,7 @@
                                 {{ \Illuminate\Support\Str::limit(auth()->user()->name, 18) }}
                             </button>
                             <ul class="dropdown-menu dropdown-menu-end">
+                                <li><a class="dropdown-item" href="{{ route('wishlist') }}">My Wishlist</a></li>
                                 @if (auth()->user()->isAdmin())
                                     <li><a class="dropdown-item" href="{{ route('admin.dashboard') }}">Admin dashboard</a></li>
                                 @endif

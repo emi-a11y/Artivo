@@ -87,7 +87,7 @@
 .admin-tabs .nav-link.active { background: var(--artivo-dark); border-color: var(--artivo-dark); color: #fff; }
 
 /* ---- Status chips ---- */
-.admin-chip { display: inline-block; padding: 2px 10px; border-radius: 999px; font-size: .75rem; font-weight: 600; border: 1px solid transparent; }
+.admin-chip { display: inline-block; padding: 2px 10px; border-radius: 999px; font-size: .75rem; font-weight: 600; border: 1px transparent; }
 .admin-chip-ok { background: #e6f4ea; color: #1e6b34; }
 .admin-chip-wait { background: #fff4cc; color: #6b5200; }
 .admin-chip-bad { background: #fde8e8; color: #9b1c1c; }

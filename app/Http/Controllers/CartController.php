@@ -36,9 +36,8 @@ class CartController extends Controller
     {
         $user = auth()->user();
         if (! $user) {
-            return redirect()->route('cart')
-                ->with('status', 'Please log in to check out.')
-                ->with('openLogin', true);
+            return redirect()->guest(route('login'))
+                ->with('status', 'Please log in to check out.');
         }
 
         $items = Cart::items();

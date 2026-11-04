@@ -1,0 +1,379 @@
+/* ==========================================================================
+   Artivo UI polish: light hover effects, soft shadows and small animations.
+   Loaded AFTER artivo.css (and admin.css). Colors are unchanged:
+   orange #FF6200, yellow #FFCC00, charcoal #1A1A1A, white #FFFFFF.
+   To switch everything off, remove the two lines that load this file.
+   ========================================================================== */
+
+/* ---- Shared basics ---------------------------------------------------- */
+@media (prefers-reduced-motion: no-preference) {
+    html { scroll-behavior: smooth; }
+}
+::selection { background: rgba(255, 98, 0, 0.25); }
+
+a:focus-visible,
+.nav-link:focus-visible,
+.dropdown-item:focus-visible {
+    outline: 2px solid var(--artivo-orange);
+    outline-offset: 2px;
+    border-radius: 4px;
+}
+
+/* Page content eases in once (no leftover transform, so modals still work) */
+@keyframes ap-fade-up {
+    from { opacity: 0; transform: translateY(10px); }
+}
+@keyframes ap-fade {
+    from { opacity: 0; }
+}
+@keyframes ap-rise {
+    from { opacity: 0; transform: translateY(14px); }
+}
+main { animation: ap-fade-up 0.45s ease backwards; }
+
+/* ---- Buttons ---------------------------------------------------------- */
+.btn {
+    transition: transform 0.15s ease, box-shadow 0.2s ease, background-color 0.2s ease,
+                border-color 0.2s ease, color 0.2s ease;
+}
+.btn:not(.btn-link):not(:disabled):not(.disabled):active { transform: translateY(0) scale(0.98); }
+
+@media (hover: hover) and (pointer: fine) {
+    .btn:not(.btn-link):not(:disabled):not(.disabled):hover { transform: translateY(-1px); }
+    .btn-primary:not(:disabled):hover { box-shadow: 0 6px 16px rgba(255, 98, 0, 0.32); }
+    .btn-outline-primary:not(:disabled):hover { box-shadow: 0 4px 12px rgba(255, 98, 0, 0.25); }
+    .btn-dark:not(:disabled):hover { box-shadow: 0 6px 16px rgba(26, 26, 26, 0.3); }
+    .btn-outline-dark:not(:disabled):hover { box-shadow: 0 4px 12px rgba(26, 26, 26, 0.2); }
+    .btn-outline-light:not(:disabled):hover { box-shadow: 0 4px 14px rgba(255, 255, 255, 0.18); }
+    .btn-outline-warning:not(:disabled):hover { box-shadow: 0 4px 12px rgba(255, 204, 0, 0.3); }
+}
+
+/* ---- Form controls ---------------------------------------------------- */
+.form-control, .form-select { transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease; }
+.form-control:hover:not(:focus):not(:disabled),
+.form-select:hover:not(:focus):not(:disabled) { border-color: #8f8f8f; }
+.form-check-input { transition: background-color 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease; }
+.form-check-label { cursor: pointer; transition: color 0.15s ease; }
+.form-check:hover .form-check-label { color: var(--artivo-dark); }
+
+/* ---- Dropdowns, modals, toasts ---------------------------------------- */
+.dropdown-menu.show { animation: ap-fade 0.15s ease; }
+.dropdown-menu { box-shadow: 0 10px 28px rgba(26, 26, 26, 0.16); border-color: rgba(26, 26, 26, 0.08); }
+.dropdown-item { transition: background-color 0.15s ease, color 0.15s ease, padding-left 0.15s ease; }
+.dropdown-item:hover, .dropdown-item:focus { background: rgba(255, 98, 0, 0.1); color: var(--artivo-dark); }
+.dropdown-item:active { color: #fff; }
+@media (hover: hover) and (pointer: fine) {
+    .dropdown-item:hover { padding-left: 1.2rem; }
+}
+
+.modal.fade .modal-dialog { transform: translateY(-22px) scale(0.97); transition: transform 0.3s ease-out; }
+.modal.show .modal-dialog { transform: none; }
+.modal-content { border: 0; border-radius: 12px; box-shadow: 0 24px 60px rgba(26, 26, 26, 0.28); }
+.modal-backdrop.show { opacity: 0.55; }
+
+.toast { border-radius: 10px; box-shadow: 0 10px 28px rgba(26, 26, 26, 0.3); }
+.toast.show { animation: ap-fade-up 0.3s ease; }
+
+/* ---- Pagination (storefront and admin) -------------------------------- */
+.artivo-pagination .page-link,
+.admin-pagination .page-link { transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease, transform 0.15s ease; }
+@media (hover: hover) and (pointer: fine) {
+    .artivo-pagination .page-item:not(.active):not(.disabled) .page-link:hover,
+    .admin-pagination .page-item:not(.active):not(.disabled) .page-link:hover {
+        border-color: var(--artivo-orange);
+        color: var(--artivo-orange-text);
+        background: rgba(255, 98, 0, 0.06);
+        transform: translateY(-1px);
+    }
+}
+
+/* ==========================================================================
+   Storefront
+   ========================================================================== */
+
+/* Navbar: sticks to the top, shadow appears after scrolling */
+.artivo-nav { position: sticky; top: 0; z-index: 1030; transition: box-shadow 0.25s ease; }
+.artivo-nav.is-scrolled { box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3); }
+.artivo-nav .navbar-brand .artivo-logo { transition: transform 0.25s ease; }
+.artivo-nav .nav-link { position: relative; transition: color 0.2s ease; }
+.artivo-search .form-control { transition: box-shadow 0.2s ease; }
+.artivo-search .form-control:focus { box-shadow: 0 0 0 0.25rem rgba(255, 204, 0, 0.45); }
+@media (min-width: 992px) {
+    .artivo-nav .navbar-nav .nav-link::after {
+        content: "";
+        position: absolute;
+        left: 0.5rem;
+        right: 0.5rem;
+        bottom: 2px;
+        height: 2px;
+        border-radius: 2px;
+        background: var(--artivo-yellow);
+        transform: scaleX(0);
+        transition: transform 0.25s ease;
+    }
+    .artivo-nav .navbar-nav .nav-link:hover::after,
+    .artivo-nav .navbar-nav .nav-link.active::after { transform: scaleX(1); }
+}
+@media (hover: hover) and (pointer: fine) {
+    .artivo-nav .navbar-brand:hover .artivo-logo { transform: scale(1.04); }
+}
+
+/* Hero: soft orange glow in the corner */
+.hero {
+    background:
+        radial-gradient(900px 380px at 88% -10%, rgba(255, 98, 0, 0.2), transparent 62%),
+        var(--artivo-dark);
+}
+.hero .art-ph--hero { transition: background-color 0.3s ease, border-color 0.3s ease; }
+.hero .art-ph--hero:hover { background: rgba(255, 255, 255, 0.12); border-color: rgba(255, 204, 0, 0.6); }
+
+/* Section headings and "View all" links */
+.view-all { transition: color 0.2s ease; }
+.view-all::after {
+    content: "\2192";
+    content: "\2192" / "";
+    display: inline-block;
+    margin-left: 0.3em;
+    transition: transform 0.2s ease;
+}
+.view-all:hover::after { transform: translateX(4px); }
+.section-head h2 { position: relative; }
+
+/* Artwork cards: lift, image glow, animated title underline */
+.artwork-card { transition: transform 0.25s ease; animation: ap-rise 0.5s ease backwards; }
+.artwork-card .art-ph {
+    transition: background-color 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+}
+.artwork-title a {
+    background-image: linear-gradient(currentColor, currentColor);
+    background-repeat: no-repeat;
+    background-position: 0 100%;
+    background-size: 0 1px;
+    transition: background-size 0.25s ease, color 0.2s ease;
+}
+@media (hover: hover) and (pointer: fine) {
+    .artwork-card:hover { transform: translateY(-4px); }
+    .artwork-card:hover .art-ph {
+        background: rgba(255, 204, 0, 0.3);
+        border-color: var(--artivo-yellow);
+        box-shadow: 0 12px 26px rgba(26, 26, 26, 0.14);
+    }
+    .artwork-card:hover .artwork-title a { background-size: 100% 1px; color: var(--artivo-orange-text); }
+}
+/* Cards enter one after another */
+.row > .col:nth-child(1) > .artwork-card { animation-delay: 0s; }
+.row > .col:nth-child(2) > .artwork-card { animation-delay: 0.05s; }
+.row > .col:nth-child(3) > .artwork-card { animation-delay: 0.1s; }
+.row > .col:nth-child(4) > .artwork-card { animation-delay: 0.15s; }
+.row > .col:nth-child(5) > .artwork-card { animation-delay: 0.2s; }
+.row > .col:nth-child(n+6) > .artwork-card { animation-delay: 0.25s; }
+
+/* Category tiles */
+a.art-ph--tile { transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease, border-color 0.2s ease; }
+@media (hover: hover) and (pointer: fine) {
+    a.art-ph--tile:hover {
+        transform: translateY(-3px);
+        background: rgba(255, 204, 0, 0.45);
+        border-color: var(--artivo-yellow);
+        box-shadow: 0 10px 22px rgba(255, 204, 0, 0.35);
+    }
+}
+
+/* Top artists */
+.artist-link .avatar { transition: transform 0.25s ease, box-shadow 0.25s ease, background-color 0.25s ease; }
+.artist-link .artist-name { transition: color 0.2s ease; }
+@media (hover: hover) and (pointer: fine) {
+    .artist-link:hover .avatar {
+        transform: scale(1.06);
+        background: rgba(255, 204, 0, 0.45);
+        box-shadow: 0 0 0 4px rgba(255, 204, 0, 0.4);
+    }
+}
+
+/* Breadcrumb, filters */
+.artivo-breadcrumb a { transition: color 0.2s ease; }
+.artivo-breadcrumb a:hover { text-decoration: underline; text-underline-offset: 3px; }
+
+/* Artwork detail */
+.art-ph--wide, .art-ph--thumb { transition: background-color 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease; }
+@media (hover: hover) and (pointer: fine) {
+    .art-ph--wide:hover, .art-ph--thumb:hover {
+        background: rgba(255, 204, 0, 0.26);
+        border-color: var(--artivo-yellow);
+        box-shadow: 0 10px 24px rgba(26, 26, 26, 0.1);
+    }
+}
+.details-box { transition: box-shadow 0.25s ease, border-color 0.25s ease; }
+.details-box:hover { border-color: rgba(255, 98, 0, 0.5); box-shadow: 0 8px 22px rgba(26, 26, 26, 0.07); }
+.wishlist { transition: color 0.2s ease, transform 0.15s ease; }
+.wishlist:hover { color: var(--artivo-orange-text); }
+
+/* Cart */
+.cart-item { transition: border-color 0.25s ease, box-shadow 0.25s ease; }
+.cart-item:hover { border-color: rgba(255, 98, 0, 0.55); box-shadow: 0 8px 20px rgba(26, 26, 26, 0.08); }
+.remove-link { transition: color 0.2s ease; }
+.remove-link:hover { color: #b3261e; text-decoration: underline; }
+@media (min-width: 992px) {
+    .order-summary { position: sticky; top: 92px; }
+}
+.order-summary { transition: box-shadow 0.25s ease; }
+.order-summary:hover { box-shadow: 0 10px 26px rgba(255, 204, 0, 0.28); }
+
+/* Login / register modal tabs */
+.artivo-modal-tabs .nav-link { transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease; }
+.artivo-modal-tabs .nav-link:not(.active):hover { border-color: var(--artivo-orange); color: var(--artivo-orange-text); }
+
+/* Footer links: yellow underline grows from the left */
+.footer-links a {
+    padding-bottom: 2px;
+    background-image: linear-gradient(var(--artivo-yellow), var(--artivo-yellow));
+    background-repeat: no-repeat;
+    background-position: 0 100%;
+    background-size: 0 1px;
+    transition: background-size 0.25s ease, color 0.2s ease;
+}
+.footer-links a:hover { background-size: 100% 1px; }
+
+/* Seller call to action */
+.seller-cta .btn-dark:hover { color: var(--artivo-yellow); }
+
+/* ==========================================================================
+   Admin
+   ========================================================================== */
+
+/* Sidebar */
+.admin-nav-link { position: relative; transition: background-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease; }
+.admin-nav-link.active { box-shadow: 0 6px 16px rgba(255, 98, 0, 0.35); }
+.admin-nav-link.active::before {
+    content: "";
+    position: absolute;
+    left: -16px;
+    top: 9px;
+    bottom: 9px;
+    width: 4px;
+    border-radius: 0 4px 4px 0;
+    background: var(--artivo-yellow);
+}
+.admin-brand .artivo-logo { transition: transform 0.25s ease; }
+.admin-view-site { transition: color 0.2s ease, transform 0.2s ease; }
+@media (hover: hover) and (pointer: fine) {
+    .admin-nav-link:not(.active):hover { transform: translateX(4px); }
+    .admin-brand:hover .artivo-logo { transform: scale(1.03); }
+    .admin-view-site:hover { transform: translateX(-3px); }
+}
+
+/* Top bar */
+.admin-topbar { box-shadow: 0 3px 14px rgba(26, 26, 26, 0.22); }
+.admin-search { transition: width 0.3s ease; }
+.admin-search:focus-within { width: 340px; }
+.admin-search .form-control:focus { box-shadow: 0 0 0 0.22rem rgba(26, 26, 26, 0.3); border-color: transparent; }
+.admin-avatar { transition: box-shadow 0.2s ease, transform 0.2s ease; }
+.admin-user-btn { transition: opacity 0.2s ease; }
+.admin-user-btn:hover .admin-avatar,
+.admin-user-btn:focus-visible .admin-avatar { box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.75); }
+.admin-menu-btn { transition: background-color 0.2s ease; }
+.admin-menu-btn:hover { background: rgba(255, 255, 255, 0.25); }
+
+/* Stat cards */
+.admin-stat { position: relative; overflow: hidden; transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease; }
+.admin-stat::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--artivo-orange), var(--artivo-yellow));
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.35s ease;
+}
+@media (hover: hover) and (pointer: fine) {
+    .admin-stat:hover { transform: translateY(-3px); box-shadow: 0 12px 26px rgba(26, 26, 26, 0.1); border-color: rgba(255, 98, 0, 0.45); }
+    .admin-stat:hover::before { transform: scaleX(1); }
+}
+
+/* Chart: bars grow in, then react to hover */
+.admin-bar { transform-origin: bottom; transition: filter 0.2s ease; }
+@media (prefers-reduced-motion: no-preference) {
+    .admin-bar { animation: ap-grow 0.7s cubic-bezier(0.2, 0.8, 0.2, 1) backwards; }
+    .admin-bar-col:nth-child(2) .admin-bar { animation-delay: 0.06s; }
+    .admin-bar-col:nth-child(3) .admin-bar { animation-delay: 0.12s; }
+    .admin-bar-col:nth-child(4) .admin-bar { animation-delay: 0.18s; }
+    .admin-bar-col:nth-child(5) .admin-bar { animation-delay: 0.24s; }
+    .admin-bar-col:nth-child(6) .admin-bar { animation-delay: 0.3s; }
+}
+@keyframes ap-grow { from { transform: scaleY(0); } }
+.admin-bar-label { transition: color 0.2s ease, font-weight 0.2s ease; }
+.admin-bar-col:hover .admin-bar { filter: brightness(1.08) saturate(1.1); }
+.admin-bar-col:hover .admin-bar-label { color: var(--artivo-dark); font-weight: 600; }
+
+/* Top selling list */
+.admin-top li {
+    margin-inline: -8px;
+    padding-inline: 8px;
+    border-radius: 8px;
+    transition: background-color 0.2s ease, transform 0.2s ease;
+}
+.admin-top li:hover { background: rgba(255, 204, 0, 0.14); }
+.admin-top .admin-thumb { transition: transform 0.2s ease, border-color 0.2s ease; }
+.admin-top li:hover .admin-thumb { transform: scale(1.08); border-color: var(--artivo-yellow); }
+
+/* Tables: soft yellow row highlight */
+.admin-table tbody tr { transition: background-color 0.15s ease; }
+.admin-table tbody tr:hover > * { --bs-table-bg-state: rgba(255, 204, 0, 0.14); }
+.admin-table .admin-thumb { transition: transform 0.2s ease; }
+.admin-table tbody tr:hover .admin-thumb { transform: scale(1.08); }
+.admin-link { transition: color 0.2s ease; }
+.admin-link::after {
+    content: "\2192";
+    content: "\2192" / "";
+    display: inline-block;
+    margin-left: 0.3em;
+    transition: transform 0.2s ease;
+}
+.admin-link:hover::after { transform: translateX(4px); }
+
+/* Tabs and chips */
+.admin-tabs .nav-link { transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease, transform 0.15s ease; }
+.admin-tabs .nav-link:not(.active):hover { background: rgba(255, 204, 0, 0.22); border-color: var(--artivo-dark); }
+.admin-chip { transition: transform 0.15s ease; }
+.admin-table tbody tr:hover .admin-chip { transform: scale(1.05); }
+
+/* ---- Back to top button (added by ui-polish.js) ----------------------- */
+.ap-top {
+    position: fixed;
+    right: 18px;
+    bottom: 80px;
+    z-index: 1020;
+    width: 44px;
+    height: 44px;
+    padding: 0;
+    border: 0;
+    border-radius: 50%;
+    background: var(--artivo-orange);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 8px 20px rgba(255, 98, 0, 0.38);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(12px);
+    transition: opacity 0.25s ease, transform 0.25s ease, visibility 0.25s, background-color 0.2s ease;
+}
+.ap-top svg { width: 20px; height: 20px; }
+.ap-top.is-visible { opacity: 1; visibility: visible; transform: none; }
+.ap-top:hover { background: #E05600; transform: translateY(-2px); }
+.ap-top:focus-visible { outline: 2px solid var(--artivo-dark); outline-offset: 3px; }
+
+/* ---- Respect "reduce motion" system setting --------------------------- */
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-delay: 0s !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+}

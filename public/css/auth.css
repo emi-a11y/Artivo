@@ -1,0 +1,69 @@
+/* Artivo login / register page. Same palette as the rest of the site. */
+.auth-shell { display: flex; min-height: 100vh; background: #fff; }
+
+/* Brand panel */
+.auth-brand {
+    flex: 0 0 42%; max-width: 560px; display: flex; flex-direction: column; justify-content: space-between;
+    padding: 2.5rem 3rem; color: #fff; position: relative; overflow: hidden;
+    background: var(--artivo-dark);
+}
+.auth-brand::before {
+    content: ""; position: absolute; width: 420px; height: 420px; border-radius: 50%;
+    right: -140px; bottom: -120px; background: var(--artivo-orange); opacity: .9;
+}
+.auth-brand::after {
+    content: ""; position: absolute; width: 130px; height: 130px; border-radius: 50%;
+    right: 70px; bottom: 150px; background: var(--artivo-yellow); opacity: .9;
+}
+.auth-brand > * { position: relative; z-index: 1; }
+.auth-logo img { display: block; height: 36px; width: auto; }
+.auth-brand-body h1 { font-size: 2.1rem; font-weight: 700; line-height: 1.2; margin-bottom: 1.5rem; }
+.auth-brand-body h1 span { color: var(--artivo-yellow); }
+.auth-points { list-style: none; padding: 0; margin: 0; }
+.auth-points li { position: relative; padding-left: 1.5rem; margin-bottom: .75rem; color: #e8e8e8; }
+.auth-points li::before {
+    content: ""; position: absolute; left: 0; top: .5em; width: .6rem; height: .6rem;
+    border-radius: 50%; background: var(--artivo-orange);
+}
+.auth-brand-foot { margin: 0; font-size: .8rem; color: #bdbdbd; }
+
+/* Form panel */
+.auth-main { flex: 1; display: flex; align-items: center; justify-content: center; padding: 2rem 1.25rem; }
+.auth-card { width: 100%; max-width: 420px; animation: authIn .35s ease backwards; }
+@keyframes authIn { from { opacity: 0; transform: translateY(10px); } }
+.auth-back { display: inline-block; margin-bottom: 1.5rem; font-size: .85rem; color: var(--artivo-muted); }
+.auth-back:hover { color: var(--artivo-orange-text); }
+.auth-title { font-size: 1.6rem; font-weight: 700; margin-bottom: .25rem; }
+.auth-sub { color: var(--artivo-muted); margin-bottom: 1.25rem; }
+
+.auth-tabs { display: flex; gap: 0; margin-bottom: 1.25rem; border-bottom: 1px solid var(--artivo-line); }
+.auth-tabs a {
+    flex: 1; text-align: center; padding: .6rem 0; font-weight: 600; color: var(--artivo-muted);
+    border-bottom: 3px solid transparent; margin-bottom: -1px; transition: color .15s, border-color .15s;
+}
+.auth-tabs a:hover { color: var(--artivo-dark); }
+.auth-tabs a.active { color: var(--artivo-dark); border-bottom-color: var(--artivo-orange); }
+
+.auth-card .form-control:focus {
+    border-color: var(--artivo-orange); box-shadow: 0 0 0 .2rem rgba(255, 98, 0, .2);
+}
+.auth-pass { position: relative; }
+.auth-pass .form-control { padding-right: 4.2rem; }
+.auth-toggle {
+    position: absolute; right: .35rem; top: 50%; transform: translateY(-50%);
+    border: 0; background: none; padding: .25rem .5rem; font-size: .8rem; font-weight: 600;
+    color: var(--artivo-orange-text); border-radius: 4px;
+}
+.auth-toggle:hover { background: rgba(255, 98, 0, .1); }
+.auth-switch { text-align: center; margin: 1.25rem 0 0; color: var(--artivo-muted); }
+.auth-switch a { color: var(--artivo-orange-text); font-weight: 600; }
+.auth-switch a:hover { text-decoration: underline; }
+
+/* Phones and small tablets: brand panel becomes a slim bar on top */
+@media (max-width: 767.98px) {
+    .auth-shell { flex-direction: column; }
+    .auth-brand { flex: none; max-width: none; padding: 1rem 1.25rem; }
+    .auth-brand::before, .auth-brand::after, .auth-brand-body, .auth-brand-foot { display: none; }
+    .auth-main { align-items: flex-start; padding-top: 1.5rem; }
+}
+@media (prefers-reduced-motion: reduce) { .auth-card { animation: none; } }

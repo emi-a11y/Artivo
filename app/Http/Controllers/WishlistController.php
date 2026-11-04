@@ -25,7 +25,7 @@ class WishlistController extends Controller
         $user = auth()->user();
 
         if (! $user) {
-            return back()->with('status', 'Please log in to save artworks to your wishlist.')->with('openLogin', true);
+            return redirect()->guest(route('login'))->with('status', 'Please log in to save artworks to your wishlist.');
         }
 
         $result = $user->wishlist()->toggle($artwork->id);

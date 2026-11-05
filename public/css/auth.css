@@ -67,3 +67,48 @@
     .auth-main { align-items: flex-start; padding-top: 1.5rem; }
 }
 @media (prefers-reduced-motion: reduce) { .auth-card { animation: none; } }
+
+/* ---- Wrong password / lockout feedback ---------------------------------- */
+.auth-shake { animation: authIn .35s ease backwards, authShake .5s .1s cubic-bezier(.36, .07, .19, .97) both; }
+@keyframes authShake {
+    10%, 90% { transform: translateX(-2px); }
+    20%, 80% { transform: translateX(4px); }
+    30%, 50%, 70% { transform: translateX(-7px); }
+    40%, 60% { transform: translateX(7px); }
+}
+.auth-card .form-control.is-invalid { border-color: #dc3545; background-image: none; }
+.auth-card .form-control.is-invalid:focus { box-shadow: 0 0 0 .2rem rgba(220, 53, 69, .2); }
+.auth-card .invalid-feedback { font-weight: 600; animation: authIn .3s ease backwards; }
+.auth-shake-field { animation: authFlash .9s ease; }
+@keyframes authFlash { 0% { background-color: rgba(220, 53, 69, .15); } 100% { background-color: #fff; } }
+
+.auth-warn {
+    margin-bottom: 1rem; padding: .55rem .8rem; border-radius: 6px; font-size: .85rem; font-weight: 600;
+    background: rgba(255, 204, 0, .2); color: var(--artivo-dark);
+    animation: authPulse 1.4s ease 2;
+}
+@keyframes authPulse { 50% { background: rgba(255, 98, 0, .18); } }
+
+.auth-lock-banner {
+    margin-bottom: 1rem; padding: .7rem .9rem; border-radius: 6px; font-size: .88rem;
+    background: rgba(220, 53, 69, .08); color: #842029;
+}
+.auth-lock-bar { height: 4px; margin-top: .55rem; border-radius: 2px; background: rgba(220, 53, 69, .15); overflow: hidden; }
+.auth-lock-bar span { display: block; height: 100%; background: #dc3545; transition: width 1s linear; }
+
+.auth-lock-modal { border: 0; border-radius: 12px; overflow: hidden; }
+.auth-lock-icon {
+    width: 60px; height: 60px; margin: 0 auto 1rem; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+    background: var(--artivo-orange); color: #fff; animation: authLockPop .5s ease backwards, authLockPulse 2s 1s ease infinite;
+}
+@keyframes authLockPop { from { transform: scale(.4); opacity: 0; } 60% { transform: scale(1.12); } }
+@keyframes authLockPulse { 50% { box-shadow: 0 0 0 10px rgba(255, 98, 0, .18); } }
+.auth-lock-count { display: flex; flex-direction: column; align-items: center; line-height: 1; }
+.auth-lock-count span { font-size: 2.6rem; font-weight: 700; color: var(--artivo-orange-text); font-variant-numeric: tabular-nums; }
+.auth-lock-count small { margin-top: .3rem; color: var(--artivo-muted); }
+#loginSubmit:disabled { background: #bdbdbd; border-color: #bdbdbd; opacity: 1; cursor: not-allowed; }
+
+@media (prefers-reduced-motion: reduce) {
+    .auth-shake, .auth-shake-field, .auth-warn, .auth-lock-icon, .auth-card .invalid-feedback { animation: none; }
+    .auth-lock-bar span { transition: none; }
+}

@@ -90,7 +90,7 @@
                         <div class="mb-3">
                             <label for="loginEmail" class="form-label">Email</label>
                             <input type="email" class="form-control @error('email') is-invalid auth-shake-field @enderror"
-                                id="loginEmail" name="email" value="{{ old('email') }}" placeholder="name@example.com"
+                                id="loginEmail" name="email" value="{{ old('email') }}" placeholder="Your Email"
                                 autocomplete="email" required {{ $errors->has('password') ? '' : 'autofocus' }}>
                             @error('email')
                             <div class="invalid-feedback d-block">{{ $message }}</div>@enderror

@@ -26,9 +26,6 @@
                     <a class="nav-link" href="{{ route('page.show', 'artists') }}">Artists</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ route('page.show', 'sell') }}">Sell</a>
-                </li>
-                <li class="nav-item">
                     <a class="nav-link {{ request()->routeIs('cart') ? 'active' : '' }}" href="{{ route('cart') }}" {!! request()->routeIs('cart') ? 'aria-current="page"' : '' !!}>Cart ({{ $cartCount }})</a>
                 </li>
                 <li class="nav-item mt-2 mt-lg-0">

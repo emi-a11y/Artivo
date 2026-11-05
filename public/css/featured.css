@@ -1,0 +1,132 @@
+/* ==========================================================================
+   Featured Artworks showcase + fade into Shop by Category
+   Same palette: orange #FF6200, yellow #FFCC00, charcoal #1A1A1A, white
+   ========================================================================== */
+@import url('https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700&display=swap');
+
+.featured-band {
+    --cw: 150px;      /* width of a collapsed slide  (set by featured.js) */
+    --aw: 520px;      /* width of the open slide      (set by featured.js) */
+    --gap: 14px;
+    --h: 460px;
+    position: relative;
+    background:
+        radial-gradient(700px 320px at 50% 62%, rgba(255, 98, 0, 0.16), transparent 70%),
+        var(--artivo-dark);
+    color: #fff;
+    padding: 1rem 0 0;
+    overflow: hidden;
+}
+
+.feat-head { display: flex; justify-content: space-between; align-items: flex-end; gap: 1rem; margin-bottom: 1.5rem; }
+.feat-head h2 {
+    margin: 0; color: #fff; font-family: 'Bricolage Grotesque', 'Inter', system-ui, sans-serif;
+    font-size: clamp(1.6rem, 1.2rem + 1.4vw, 2.2rem); font-weight: 700; letter-spacing: -0.01em;
+}
+.feat-controls { display: flex; align-items: center; gap: 0.6rem; }
+.feat-count { font-size: 0.8125rem; color: rgba(255, 255, 255, 0.65); font-variant-numeric: tabular-nums; margin-right: 0.35rem; }
+.feat-arrow {
+    width: 42px; height: 42px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center;
+    background: transparent; color: #fff; border: 1.5px solid rgba(255, 255, 255, 0.55); cursor: pointer;
+    transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
+}
+.feat-arrow:hover { background: var(--artivo-orange); border-color: var(--artivo-orange); }
+.feat-arrow:active { transform: scale(0.92); }
+.feat-arrow:focus-visible, .feat-jump:focus-visible { outline: 2px solid var(--artivo-yellow); outline-offset: 3px; }
+
+/* ---- Sliding track ------------------------------------------------------ */
+.feat-viewport {
+    position: relative; overflow: hidden; touch-action: pan-y;
+    -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 7%, #000 93%, transparent 100%);
+            mask-image: linear-gradient(90deg, transparent 0, #000 7%, #000 93%, transparent 100%);
+}
+.feat-track {
+    display: flex; gap: var(--gap); width: max-content; padding-bottom: 3.5rem;
+    transition: transform 0.65s cubic-bezier(0.22, 0.8, 0.3, 1);
+    will-change: transform;
+}
+.feat-slide {
+    position: relative; flex: 0 0 auto; width: var(--cw); height: var(--h); border-radius: 22px; overflow: hidden;
+    background: #111; cursor: pointer; opacity: 0.7;
+    transition: width 0.65s cubic-bezier(0.22, 0.8, 0.3, 1), opacity 0.4s ease, transform 0.25s ease;
+}
+@media (hover: hover) {
+    .feat-slide:not(.is-active):hover { opacity: 1; transform: translateY(-5px); }
+}
+.feat-slide.is-active { width: var(--aw); opacity: 1; cursor: default; }
+
+/* Artwork area (placeholder until real images exist) */
+.feat-art {
+    position: absolute; inset: 0; display: flex; align-items: flex-start; justify-content: center; padding-top: 1.1rem;
+    font-size: 0.8125rem; color: rgba(255, 255, 255, 0.55);
+    background: linear-gradient(160deg, var(--tone-a), var(--tone-b));
+}
+.feat-art img { width: 100%; height: 100%; object-fit: cover; }
+.tone-0 { --tone-a: #8a3200; --tone-b: #2b1100; }
+.tone-1 { --tone-a: #6b5600; --tone-b: #231c00; }
+.tone-2 { --tone-a: #3a3a3a; --tone-b: #121212; }
+.feat-art::after { /* soft dark gradient so the bottom text stays readable */
+    content: ""; position: absolute; inset: auto 0 0 0; height: 62%;
+    background: linear-gradient(to top, rgba(10, 10, 10, 0.96) 12%, rgba(10, 10, 10, 0));
+    opacity: 0; transition: opacity 0.5s ease;
+}
+.feat-slide.is-active .feat-art::after { opacity: 1; }
+.feat-art span { position: relative; z-index: 1; }
+
+/* Arrow button on collapsed slides */
+.feat-jump {
+    position: absolute; left: 50%; bottom: 1.4rem; transform: translateX(-50%); width: 46px; height: 46px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center; background: rgba(0, 0, 0, 0.35); color: #fff;
+    border: 1.5px solid rgba(255, 255, 255, 0.7); cursor: pointer; z-index: 2;
+    transition: opacity 0.3s ease, background-color 0.2s ease, border-color 0.2s ease;
+}
+.feat-slide:not(.is-active):hover .feat-jump { background: var(--artivo-orange); border-color: var(--artivo-orange); }
+.feat-slide.is-active .feat-jump { opacity: 0; pointer-events: none; }
+
+/* Text on the open slide */
+.feat-info {
+    position: absolute; left: 0; right: 0; bottom: 0; padding: 1.5rem 1.6rem 1.5rem; z-index: 1;
+    width: var(--aw); max-width: 100%;
+    opacity: 0; visibility: hidden; transform: translateY(12px);
+    transition: opacity 0.3s ease, transform 0.3s ease, visibility 0s linear 0.3s;
+}
+.feat-slide.is-active .feat-info {
+    opacity: 1; visibility: visible; transform: none;
+    transition: opacity 0.45s ease 0.3s, transform 0.45s ease 0.3s, visibility 0s;
+}
+.feat-tags { margin: 0 0 0.35rem; font-size: 0.75rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--artivo-yellow); }
+.feat-title {
+    margin: 0; font-family: 'Bricolage Grotesque', 'Inter', system-ui, sans-serif; font-size: 1.9rem; font-weight: 700;
+    line-height: 1.1; letter-spacing: -0.01em; color: #fff;
+}
+.feat-artist { margin: 0.3rem 0 0.7rem; font-size: 0.875rem; color: rgba(255, 255, 255, 0.75); }
+.feat-desc { margin: 0 0 0.9rem; font-size: 0.8125rem; line-height: 1.5; color: rgba(255, 255, 255, 0.82); max-width: 440px; }
+.feat-foot { display: flex; align-items: baseline; gap: 0.9rem; margin-bottom: 0.9rem; }
+.feat-price { font-size: 1.35rem; font-weight: 700; color: #fff; }
+.feat-rating { font-size: 0.8125rem; color: rgba(255, 255, 255, 0.75); }
+.feat-rating small { color: rgba(255, 255, 255, 0.55); }
+.feat-actions { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+
+/* ---- Fade into Shop by Category ---------------------------------------- */
+.cat-section {
+    padding: 8.5rem 0 3rem; margin-top: -1px;
+    background: linear-gradient(to bottom, var(--artivo-dark) 0, rgba(26, 26, 26, 0.55) 40px, #fff 128px);
+}
+.cat-section .section-head { margin-top: -1rem; }
+
+/* ---- Smaller screens ---------------------------------------------------- */
+@media (max-width: 991.98px) {
+    .featured-band { --h: 430px; }
+    .feat-title { font-size: 1.6rem; }
+}
+@media (max-width: 575.98px) {
+    .featured-band { --h: 440px; --gap: 10px; }
+    .feat-info { padding: 1.1rem; }
+    .feat-title { font-size: 1.4rem; }
+    .feat-count { display: none; }
+    .feat-jump { width: 40px; height: 40px; bottom: 1rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .feat-track, .feat-slide, .feat-info, .feat-art::after { transition-duration: 0.01ms !important; transition-delay: 0s !important; }
+}

@@ -23,9 +23,12 @@
     </div>
 </section>
 
-<div class="container py-5">
-    {{-- Shop by category --}}
-    <section class="mb-5" aria-labelledby="catHeading">
+{{-- Featured artworks (sliding showcase) --}}
+@include('partials.featured-carousel')
+
+{{-- Shop by category: fades in from the dark featured band --}}
+<section class="cat-section" aria-labelledby="catHeading">
+    <div class="container">
         <div class="section-head">
             <h2 id="catHeading">Shop by Category</h2>
         </div>
@@ -36,21 +39,10 @@
                 </div>
             @endforeach
         </div>
-    </section>
+    </div>
+</section>
 
-    {{-- Featured --}}
-    <section class="mb-5" aria-labelledby="featHeading">
-        <div class="section-head">
-            <h2 id="featHeading">Featured Artworks</h2>
-            <a href="{{ route('browse') }}" class="view-all">View all</a>
-        </div>
-        <div class="row row-cols-2 row-cols-md-3 row-cols-lg-5 g-4">
-            @foreach ($featured as $art)
-                <div class="col">@include('partials.artwork-card', ['art' => $art])</div>
-            @endforeach
-        </div>
-    </section>
-
+<div class="container pb-5">
     {{-- Top artists --}}
     <section class="mb-5" aria-labelledby="artistHeading">
         <div class="section-head">

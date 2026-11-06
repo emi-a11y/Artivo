@@ -24,43 +24,64 @@
 
             <div class="collapse d-lg-block" id="filters">
                 <h2 class="filter-title mb-3 d-none d-lg-block">Filters</h2>
-                <form action="{{ route('browse') }}" method="get">
+                @php
+                    // Link that adds/removes one category or genre and keeps every other filter.
+                    $toggle = function (string $key, string $value) use ($selectedCategories, $selectedGenres) {
+                        $current = array_values($key === 'category' ? $selectedCategories : $selectedGenres);
+                        $next = in_array($value, $current, true)
+                            ? array_values(array_diff($current, [$value]))
+                            : array_merge($current, [$value]);
+
+                        return request()->fullUrlWithQuery([$key => $next ?: null, 'page' => null]);
+                    };
+                    $hasFilters = $selectedCategories || $selectedGenres
+                        || is_numeric(request('min')) || is_numeric(request('max'));
+                @endphp
+
+                <fieldset class="mb-3">
+                    <legend class="filter-label">Category</legend>
+                    <ul class="filter-list list-unstyled mb-0">
+                        @foreach ($categories as $category)
+                            @php $on = in_array($category->name, $selectedCategories, true); @endphp
+                            <li><a href="{{ $toggle('category', $category->name) }}" class="filter-option {{ $on ? 'active' : '' }}" aria-pressed="{{ $on ? 'true' : 'false' }}">{{ $category->name }}@if ($on)<span class="filter-x" aria-hidden="true">&times;</span>@endif</a></li>
+                        @endforeach
+                    </ul>
+                </fieldset>
+                <hr>
+
+                {{-- Price applies by itself as soon as a value is entered --}}
+                <form action="{{ route('browse') }}" method="get" id="priceForm">
                     @if (request('q'))<input type="hidden" name="q" value="{{ request('q') }}">@endif
                     @if ($sort !== 'newest')<input type="hidden" name="sort" value="{{ $sort }}">@endif
-                    <fieldset class="mb-3">
-                        <legend class="filter-label">Category</legend>
-                        @foreach ($categories as $category)
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" name="category[]" value="{{ $category->name }}" id="cat{{ $category->id }}" @checked(in_array($category->name, $selectedCategories))>
-                                <label class="form-check-label" for="cat{{ $category->id }}">{{ $category->name }}</label>
-                            </div>
-                        @endforeach
-                    </fieldset>
-                    <hr>
+                    @foreach ($selectedCategories as $c)<input type="hidden" name="category[]" value="{{ $c }}">@endforeach
+                    @foreach ($selectedGenres as $g)<input type="hidden" name="genre[]" value="{{ $g }}">@endforeach
                     <fieldset class="mb-3">
                         <legend class="filter-label">Price</legend>
                         <div class="row g-2">
                             <div class="col-6">
-                                <input type="number" min="0" name="min" value="{{ request('min') }}" class="form-control" placeholder="Min" aria-label="Minimum price">
+                                <input type="number" min="0" name="min" value="{{ request('min') }}" class="form-control" placeholder="Min" aria-label="Minimum price" onchange="this.form.submit()">
                             </div>
                             <div class="col-6">
-                                <input type="number" min="0" name="max" value="{{ request('max') }}" class="form-control" placeholder="Max" aria-label="Maximum price">
+                                <input type="number" min="0" name="max" value="{{ request('max') }}" class="form-control" placeholder="Max" aria-label="Maximum price" onchange="this.form.submit()">
                             </div>
                         </div>
                     </fieldset>
-                    <hr>
-                    <fieldset class="mb-4">
-                        <legend class="filter-label">Genre</legend>
-                        @foreach ($genres as $genre)
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" name="genre[]" value="{{ $genre->name }}" id="genre{{ $genre->id }}" @checked(in_array($genre->name, $selectedGenres))>
-                                <label class="form-check-label" for="genre{{ $genre->id }}">{{ $genre->name }}</label>
-                            </div>
-                        @endforeach
-                    </fieldset>
-                    <button type="submit" class="btn btn-primary w-100">Apply Filters</button>
-                    <a href="{{ route('browse') }}" class="btn btn-link w-100 mt-1">Clear filters</a>
                 </form>
+                <hr>
+
+                <fieldset class="mb-4">
+                    <legend class="filter-label">Genre</legend>
+                    <ul class="filter-list list-unstyled mb-0">
+                        @foreach ($genres as $genre)
+                            @php $on = in_array($genre->name, $selectedGenres, true); @endphp
+                            <li><a href="{{ $toggle('genre', $genre->name) }}" class="filter-option {{ $on ? 'active' : '' }}" aria-pressed="{{ $on ? 'true' : 'false' }}">{{ $genre->name }}@if ($on)<span class="filter-x" aria-hidden="true">&times;</span>@endif</a></li>
+                        @endforeach
+                    </ul>
+                </fieldset>
+
+                @if ($hasFilters)
+                    <a href="{{ route('browse') }}" class="btn btn-outline-dark w-100">Remove all filters</a>
+                @endif
             </div>
         </aside>
 

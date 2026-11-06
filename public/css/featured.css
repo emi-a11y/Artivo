@@ -61,7 +61,7 @@
     font-size: 0.8125rem; color: rgba(255, 255, 255, 0.55);
     background: linear-gradient(160deg, var(--tone-a), var(--tone-b));
 }
-.feat-art img { width: 100%; height: 100%; object-fit: cover; }
+.feat-art img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
 .tone-0 { --tone-a: #8a3200; --tone-b: #2b1100; }
 .tone-1 { --tone-a: #6b5600; --tone-b: #231c00; }
 .tone-2 { --tone-a: #3a3a3a; --tone-b: #121212; }

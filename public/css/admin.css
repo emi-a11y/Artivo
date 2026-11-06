@@ -115,3 +115,238 @@
 .admin-thumb--img { object-fit: cover; border: 1px solid rgba(255, 204, 0, 0.7); background: #f4f1ea; }
 .art-upload-preview { display: block; width: 100%; max-height: 220px; object-fit: contain; margin-bottom: .5rem; border: 1px solid rgba(0, 0, 0, .12); border-radius: 6px; background: #f4f1ea; }
 .art-upload-preview[hidden] { display: none; }
+
+
+/* ==========================================================================
+   Dashboard redesign: gradient stat cards, nicer chart, ranked top list,
+   and a livelier Recent Orders table.
+   ========================================================================== */
+
+/* ---- Cards ---- */
+.admin-dash .card { border-color: rgba(26, 26, 26, 0.08); box-shadow: 0 1px 2px rgba(26, 26, 26, 0.04), 0 6px 18px rgba(26, 26, 26, 0.04); }
+.admin-dash .admin-card-title { display: flex; align-items: center; gap: 8px; }
+.admin-dash .admin-card-title::before { content: ""; width: 4px; height: 16px; border-radius: 4px; background: linear-gradient(to bottom, var(--artivo-orange), var(--artivo-yellow)); }
+
+/* ---- Stat cards: one gradient each ---- */
+.admin-dash .admin-stat { border: 0; color: #fff; isolation: isolate; }
+.admin-dash .admin-stat::before { display: none; }              /* replaces the thin top line from ui-polish.css */
+.admin-dash .admin-stat::after {                                  /* soft glow in the corner */
+    content: ""; position: absolute; z-index: -1; right: -34px; top: -34px; width: 130px; height: 130px; border-radius: 50%;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.28), rgba(255, 255, 255, 0) 70%);
+}
+.admin-dash .admin-stat--0 { background: linear-gradient(135deg, #B94300 0%, #F05A00 100%); }
+.admin-dash .admin-stat--1 { background: linear-gradient(135deg, #FFC400 0%, #FFE27A 100%); color: var(--artivo-dark); }
+.admin-dash .admin-stat--2 { background: linear-gradient(135deg, #1A1A1A 0%, #3F2C1B 100%); }
+.admin-dash .admin-stat--3 { background: linear-gradient(135deg, #7A2E00 0%, #B84A00 100%); }
+.admin-dash .admin-stat-label { color: inherit; opacity: 0.9; font-weight: 600; }
+.admin-dash .admin-stat-value { color: inherit; font-size: 2rem; letter-spacing: -0.01em; }
+.admin-dash .admin-stat-note {
+    display: inline-block; margin-top: 6px; padding: 2px 10px; border-radius: 999px; color: inherit; font-size: 0.75rem;
+    background: rgba(255, 255, 255, 0.2);
+}
+.admin-dash .admin-stat--1 .admin-stat-note { background: rgba(26, 26, 26, 0.1); }
+.admin-stat-icon {
+    position: absolute; top: 16px; right: 16px; width: 38px; height: 38px; border-radius: 12px;
+    display: inline-flex; align-items: center; justify-content: center; background: rgba(255, 255, 255, 0.2);
+}
+.admin-dash .admin-stat--1 .admin-stat-icon { background: rgba(26, 26, 26, 0.09); }
+@media (hover: hover) and (pointer: fine) {
+    .admin-dash .admin-stat:hover { transform: translateY(-4px); box-shadow: 0 14px 28px rgba(26, 26, 26, 0.18); border-color: transparent; }
+}
+
+/* ---- Sales chart ---- */
+.admin-dash .admin-bar-track {
+    position: relative; height: 190px;
+    background: repeating-linear-gradient(to top, transparent 0, transparent 46px, rgba(26, 26, 26, 0.06) 46px, rgba(26, 26, 26, 0.06) 47px);
+}
+.admin-dash .admin-bar-col .admin-bar,
+.admin-dash .admin-bar-col:nth-child(odd) .admin-bar { background: linear-gradient(to top, #FF6200, #FFCC00); border-radius: 8px 8px 0 0; }
+.admin-dash .admin-bar-col:last-child .admin-bar { background: linear-gradient(to top, #C24A00, #FF6200); box-shadow: 0 6px 16px rgba(255, 98, 0, 0.35); }
+.admin-bar-value {
+    position: absolute; left: 50%; transform: translate(-50%, -6px); padding: 2px 8px; border-radius: 6px; white-space: nowrap;
+    background: var(--artivo-dark); color: #fff; font-size: 0.6875rem; font-weight: 600; opacity: 0; pointer-events: none;
+    transition: opacity 0.15s ease; z-index: 2;
+}
+.admin-bar-col:hover .admin-bar-value { opacity: 1; }
+
+/* ---- Top selling ---- */
+.admin-rank {
+    flex: 0 0 22px; width: 22px; height: 22px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center;
+    font-size: 0.6875rem; font-weight: 700; background: #f1efe9; color: #4d4d4d;
+}
+.admin-rank--1 { background: linear-gradient(135deg, #FFCC00, #FF9A00); color: var(--artivo-dark); }
+.admin-top-sales { padding: 3px 10px; border-radius: 999px; background: rgba(255, 98, 0, 0.1); color: var(--artivo-orange-text); }
+
+/* ---- Recent orders: status pills ---- */
+.admin-pills { display: inline-flex; gap: 6px; flex-wrap: wrap; }
+.admin-pill {
+    display: inline-flex; align-items: center; gap: 6px; padding: 4px 12px; border-radius: 999px; cursor: pointer;
+    border: 1px solid var(--artivo-line); background: #fff; color: var(--artivo-dark); font-size: 0.8125rem; font-weight: 600;
+    transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+}
+.admin-pill span { font-size: 0.6875rem; padding: 0 6px; border-radius: 999px; background: rgba(26, 26, 26, 0.08); }
+.admin-pill:hover { border-color: var(--artivo-dark); }
+.admin-pill.is-active { background: var(--artivo-dark); border-color: var(--artivo-dark); color: #fff; }
+.admin-pill.is-active span { background: rgba(255, 255, 255, 0.2); }
+.admin-pill:focus-visible { outline: 2px solid var(--artivo-orange); outline-offset: 2px; }
+
+/* ---- Orders table (also used on the Orders page) ---- */
+.admin-table thead th { background: #faf6ee; border-bottom: 1px solid rgba(26, 26, 26, 0.1); padding-block: 0.7rem; }
+.admin-table tbody td { padding-block: 0.8rem; }
+.admin-table tbody tr { transition: background-color 0.15s ease; }
+.admin-table tbody tr:hover { background: rgba(255, 204, 0, 0.12); }
+.admin-table tbody tr:hover td:first-child { box-shadow: inset 3px 0 0 var(--artivo-orange); }
+.admin-order-code { font-weight: 700; color: var(--artivo-orange-text); letter-spacing: 0.01em; }
+.admin-order-total { font-weight: 700; }
+.admin-cust { display: inline-flex; align-items: center; gap: 10px; white-space: nowrap; }
+.admin-cust-av {
+    width: 28px; height: 28px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center;
+    background: linear-gradient(135deg, #FFCC00, #FF8A1F); color: var(--artivo-dark); font-size: 0.75rem; font-weight: 700;
+}
+@media (prefers-reduced-motion: no-preference) {
+    .admin-dash tbody tr[data-status] { animation: ap-rise 0.4s ease backwards; }
+    .admin-dash tbody tr[data-status]:nth-child(2) { animation-delay: 0.05s; }
+    .admin-dash tbody tr[data-status]:nth-child(3) { animation-delay: 0.1s; }
+    .admin-dash tbody tr[data-status]:nth-child(4) { animation-delay: 0.15s; }
+    .admin-dash tbody tr[data-status]:nth-child(5) { animation-delay: 0.2s; }
+}
+
+/* ---- Status: plain text with a small marker (no coloured pill) ---------- */
+/* Paid = filled dot, Pending = half-filled, Refunded/Blocked = empty ring. Shape carries the meaning, not colour. */
+.admin-status { display: inline-flex; align-items: center; gap: 8px; font-size: 0.8125rem; font-weight: 600; color: var(--artivo-dark); white-space: nowrap; }
+.admin-status::before { content: ""; flex: 0 0 10px; width: 10px; height: 10px; border-radius: 50%; border: 2px solid var(--artivo-orange); box-sizing: border-box; }
+.admin-status-ok::before   { background: var(--artivo-orange); }
+.admin-status-wait::before { background: conic-gradient(var(--artivo-orange) 0 50%, transparent 0); }
+.admin-status-bad { color: #777; font-weight: 500; }
+.admin-status-bad::before  { border-color: #a5a5a5; background: transparent; }
+
+/* ---- Dashboard fit: use the full width and fill the height -------------- */
+@media (min-width: 576px) {
+    .admin-content { max-width: 1600px; padding: 28px 32px; }
+}
+.admin-content:has(> .admin-dash) { display: flex; flex-direction: column; }
+.admin-dash { flex: 1 1 auto; display: flex; flex-direction: column; }
+.admin-dash-last { flex: 1 1 auto; }                       /* Recent Orders takes whatever height is left */
+.admin-dash .admin-bar-track { height: clamp(200px, 32vh, 420px); }
+.admin-dash .admin-stat .card-body { padding: 1.25rem 1.35rem; }
+.admin-dash .admin-top li { padding-block: clamp(0.6rem, 1.5vh, 1rem); }
+.admin-dash .admin-table tbody td { padding-block: clamp(0.8rem, 1.8vh, 1.2rem); }
+
+
+/* ==========================================================================
+   Admin > Artworks page: card grid (with a list switch), toolbar, header
+   ========================================================================== */
+.admin-art { width: 100%; }
+
+/* ---- Header ---- */
+.art-head { display: flex; align-items: flex-end; justify-content: space-between; gap: 1rem; flex-wrap: wrap; margin-bottom: 1.1rem; }
+.art-head-title { font-size: 1.5rem; font-weight: 700; letter-spacing: -0.01em; margin: 0; }
+.art-head-sub { margin: 0.2rem 0 0; color: var(--artivo-muted); font-size: 0.875rem; }
+.art-add { display: inline-flex; align-items: center; gap: 8px; padding: 0.6rem 1.15rem; border-radius: 10px; font-weight: 600; box-shadow: 0 8px 18px rgba(255, 98, 0, 0.28); }
+
+/* ---- Toolbar ---- */
+.art-toolbar {
+    display: flex; align-items: center; flex-wrap: wrap; gap: 0.6rem; padding: 0.6rem;
+    background: #fff; border: 1px solid rgba(26, 26, 26, 0.08); border-radius: 14px;
+    box-shadow: 0 1px 2px rgba(26, 26, 26, 0.04), 0 6px 18px rgba(26, 26, 26, 0.04);
+}
+.art-search { position: relative; flex: 1 1 260px; min-width: 0; }
+.art-search svg { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: #8a8578; pointer-events: none; }
+.art-search input {
+    width: 100%; height: 42px; padding: 0 14px 0 42px; border: 1px solid transparent; border-radius: 10px;
+    background: #f6f3ec; font-size: 0.9375rem; transition: background-color 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
+}
+.art-search input:focus { outline: 0; background: #fff; border-color: var(--artivo-orange); box-shadow: 0 0 0 0.2rem rgba(255, 98, 0, 0.15); }
+.art-select { width: auto; height: 42px; border-color: transparent; border-radius: 10px; background-color: #f6f3ec; font-size: 0.9375rem; padding-right: 2.2rem; }
+.art-select:focus { border-color: var(--artivo-orange); box-shadow: 0 0 0 0.2rem rgba(255, 98, 0, 0.15); }
+.art-clear { color: var(--artivo-orange-text); font-weight: 600; font-size: 0.875rem; white-space: nowrap; }
+.art-view { margin-left: auto; display: inline-flex; gap: 2px; padding: 3px; border-radius: 10px; background: #f6f3ec; }
+.art-view button {
+    width: 36px; height: 36px; display: inline-flex; align-items: center; justify-content: center; border: 0; border-radius: 8px;
+    background: transparent; color: #6b6b6b; cursor: pointer; transition: background-color 0.15s ease, color 0.15s ease;
+}
+.art-view button:hover { color: var(--artivo-dark); }
+.art-view button.is-active { background: #fff; color: var(--artivo-orange-text); box-shadow: 0 1px 4px rgba(26, 26, 26, 0.15); }
+.art-view button:focus-visible { outline: 2px solid var(--artivo-orange); outline-offset: 1px; }
+
+/* ---- Grid ---- */
+.art-grid { display: grid; grid-template-columns: 1fr; gap: 1.25rem; margin-top: 1.25rem; }
+@media (min-width: 640px)  { .art-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (min-width: 1200px) { .art-grid { grid-template-columns: repeat(3, 1fr); } }
+
+.art-card {
+    display: flex; flex-direction: column; overflow: hidden; background: #fff;
+    border: 1px solid rgba(26, 26, 26, 0.08); border-radius: 16px;
+    box-shadow: 0 1px 2px rgba(26, 26, 26, 0.04), 0 6px 18px rgba(26, 26, 26, 0.04);
+    transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+}
+@media (hover: hover) and (pointer: fine) {
+    .art-card:hover { transform: translateY(-4px); box-shadow: 0 16px 32px rgba(26, 26, 26, 0.12); border-color: rgba(255, 98, 0, 0.35); }
+    .art-card:hover .art-card-media img { transform: scale(1.05); }
+}
+@media (prefers-reduced-motion: no-preference) {
+    .art-card { animation: ap-rise 0.45s ease backwards; }
+    .art-card:nth-child(2) { animation-delay: 0.05s; }
+    .art-card:nth-child(3) { animation-delay: 0.1s; }
+    .art-card:nth-child(4) { animation-delay: 0.15s; }
+    .art-card:nth-child(5) { animation-delay: 0.2s; }
+    .art-card:nth-child(6) { animation-delay: 0.25s; }
+}
+
+.art-card-media { position: relative; aspect-ratio: 16 / 11; overflow: hidden; background: linear-gradient(160deg, #8a3200, #2b1100); }
+.art-card-media.tone-1 { background: linear-gradient(160deg, #6b5600, #231c00); }
+.art-card-media.tone-2 { background: linear-gradient(160deg, #3a3a3a, #121212); }
+.art-card-media img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transition: transform 0.45s ease; }
+.art-card-noimg { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; color: rgba(255, 255, 255, 0.55); font-size: 0.8125rem; }
+.art-card-status {
+    position: absolute; top: 10px; left: 10px; padding: 4px 11px 4px 10px; border-radius: 999px;
+    background: rgba(255, 255, 255, 0.92); -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); box-shadow: 0 2px 8px rgba(0, 0, 0, 0.18);
+}
+.art-card-status .admin-status { font-size: 0.75rem; }
+
+.art-card-body {
+    display: grid; grid-template-columns: minmax(0, 1fr) auto; grid-template-areas: "main price" "actions actions";
+    gap: 0 1rem; padding: 1rem 1.1rem 1.1rem;
+}
+.art-card-main { grid-area: main; min-width: 0; }
+.art-card-title { font-size: 1.0625rem; font-weight: 700; margin: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.art-card-artist { margin: 0.15rem 0 0.6rem; color: var(--artivo-muted); font-size: 0.8125rem; }
+.art-card-tags { display: flex; flex-wrap: wrap; gap: 6px; margin: 0; }
+.art-card-tags span { padding: 2px 10px; border: 1px solid rgba(26, 26, 26, 0.13); border-radius: 999px; font-size: 0.6875rem; font-weight: 600; color: #555; }
+.art-card-price { grid-area: price; align-self: start; font-size: 1.25rem; font-weight: 700; color: var(--artivo-orange-text); letter-spacing: -0.01em; }
+.art-card-actions { grid-area: actions; display: flex; align-items: center; gap: 0.5rem; margin-top: 0.95rem; padding-top: 0.95rem; border-top: 1px solid #efece4; }
+.art-card-actions .js-edit-artwork { flex: 1 1 auto; font-weight: 600; border-radius: 8px; }
+.art-card-actions form { display: flex; }
+.art-del {
+    width: 34px; height: 34px; padding: 0; display: inline-flex; align-items: center; justify-content: center;
+    border: 1px solid rgba(26, 26, 26, 0.18); border-radius: 8px; background: #fff; color: #555;
+    transition: color 0.15s ease, border-color 0.15s ease, background-color 0.15s ease;
+}
+.art-del:hover, .art-del:focus-visible { color: #9b1c1c; border-color: #9b1c1c; background: #fff; }
+
+/* ---- List layout (same cards, one per row) ---- */
+.art-grid.is-list { grid-template-columns: 1fr; gap: 0.75rem; }
+.art-grid.is-list .art-card { flex-direction: row; align-items: center; padding: 0.6rem; border-radius: 14px; }
+.art-grid.is-list .art-card-media { flex: 0 0 150px; aspect-ratio: 4 / 3; border-radius: 10px; }
+.art-grid.is-list .art-card-status { top: 6px; left: 6px; padding: 2px 9px 2px 8px; }
+.art-grid.is-list .art-card-status .admin-status { font-size: 0.6875rem; }
+.art-grid.is-list .art-card-body {
+    flex: 1 1 auto; min-width: 0; padding: 0 0.5rem 0 1rem; align-items: center;
+    grid-template-columns: minmax(0, 1fr) auto auto; grid-template-areas: "main price actions"; gap: 0 2rem;
+}
+.art-grid.is-list .art-card-artist { margin-bottom: 0.4rem; }
+.art-grid.is-list .art-card-actions { margin: 0; padding: 0; border: 0; }
+.art-grid.is-list .art-card-actions .js-edit-artwork { flex: 0 0 auto; padding-inline: 1rem; }
+@media (max-width: 767.98px) {
+    .art-grid.is-list .art-card { align-items: flex-start; }
+    .art-grid.is-list .art-card-media { flex-basis: 110px; }
+    .art-grid.is-list .art-card-body { grid-template-columns: minmax(0, 1fr) auto; grid-template-areas: "main price" "actions actions"; padding-left: 0.75rem; }
+    .art-grid.is-list .art-card-actions { margin-top: 0.6rem; }
+}
+
+/* ---- Empty state ---- */
+.art-empty {
+    display: flex; flex-direction: column; align-items: center; gap: 0.2rem; margin-top: 1.25rem; padding: 3.5rem 1rem; text-align: center;
+    border: 1.5px dashed rgba(26, 26, 26, 0.18); border-radius: 16px; background: #faf6ee; color: var(--artivo-muted);
+}
+.art-empty strong { color: var(--artivo-dark); font-size: 1.0625rem; }

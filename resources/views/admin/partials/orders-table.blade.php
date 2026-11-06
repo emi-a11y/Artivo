@@ -8,11 +8,11 @@
         </thead>
         <tbody>
             @forelse ($orders as $o)
-                <tr>
-                    <td>{{ $o->code }}</td>
-                    <td>{{ $o->user->name }}</td>
+                <tr data-status="{{ $o->status }}">
+                    <td><span class="admin-order-code">{{ $o->code }}</span></td>
+                    <td><span class="admin-cust"><span class="admin-cust-av" aria-hidden="true">{{ strtoupper(mb_substr($o->user->name, 0, 1)) }}</span>{{ $o->user->name }}</span></td>
                     <td>{{ $o->items_count }}</td>
-                    <td>${{ number_format($o->total, 2) }}</td>
+                    <td class="admin-order-total">${{ number_format($o->total, 2) }}</td>
                     <td class="text-nowrap">{{ $o->created_at->format('M j, Y') }}</td>
                     <td>@include('admin.partials.status', ['status' => $o->status])</td>
                     @if ($editable ?? false)
@@ -32,6 +32,9 @@
             @empty
                 <tr><td colspan="{{ ($editable ?? false) ? 7 : 6 }}" class="text-center text-muted py-4">No orders here yet.</td></tr>
             @endforelse
+            @if (($filterable ?? false) && collect($orders)->isNotEmpty())
+                <tr class="admin-filter-empty" hidden><td colspan="{{ ($editable ?? false) ? 7 : 6 }}" class="text-center text-muted py-4">No orders with this status.</td></tr>
+            @endif
         </tbody>
     </table>
 </div>

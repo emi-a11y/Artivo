@@ -16,13 +16,19 @@
     <div class="row g-4 g-xl-5 mb-5">
         {{-- Gallery --}}
         <div class="col-lg-7">
-            <div class="art-ph art-ph--wide mb-3">Main Artwork Preview</div>
-            <div class="row row-cols-4 g-2 g-md-3">
-                <div class="col"><div class="art-ph art-ph--thumb">Preview 1</div></div>
-                <div class="col"><div class="art-ph art-ph--thumb">Preview 2</div></div>
-                <div class="col"><div class="art-ph art-ph--thumb">Preview 3</div></div>
-                <div class="col"><div class="art-ph art-ph--thumb">Preview 4</div></div>
-            </div>
+            @if ($art->image_url)
+                <div class="art-ph art-ph--wide art-ph--img art-ph--contain art-ph--fit mb-3">
+                    <img src="{{ $art->image_url }}" alt="{{ $art->title }}" class="art-img">
+                </div>
+            @else
+                <div class="art-ph art-ph--wide mb-3">Main Artwork Preview</div>
+                <div class="row row-cols-4 g-2 g-md-3">
+                    <div class="col"><div class="art-ph art-ph--thumb">Preview 1</div></div>
+                    <div class="col"><div class="art-ph art-ph--thumb">Preview 2</div></div>
+                    <div class="col"><div class="art-ph art-ph--thumb">Preview 3</div></div>
+                    <div class="col"><div class="art-ph art-ph--thumb">Preview 4</div></div>
+                </div>
+            @endif
         </div>
 
         {{-- Purchase panel --}}

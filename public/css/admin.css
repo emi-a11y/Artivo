@@ -109,3 +109,9 @@
 .admin-menu-btn .navbar-toggler-icon {
     background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='%231A1A1A' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2.5' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
 }
+
+
+/* ---- Artwork upload (add/edit modal + table thumbnails) ---- */
+.admin-thumb--img { object-fit: cover; border: 1px solid rgba(255, 204, 0, 0.7); background: #f4f1ea; }
+.art-upload-preview { display: block; width: 100%; max-height: 220px; object-fit: contain; margin-bottom: .5rem; border: 1px solid rgba(0, 0, 0, .12); border-radius: 6px; background: #f4f1ea; }
+.art-upload-preview[hidden] { display: none; }

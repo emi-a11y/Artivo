@@ -41,7 +41,7 @@
                     <ul class="list-unstyled admin-top mb-0">
                         @forelse ($topSelling as $art)
                             <li>
-                                <span class="art-ph admin-thumb" aria-hidden="true"></span>
+                                @if ($art->image_url)<img src="{{ $art->image_url }}" alt="" class="admin-thumb admin-thumb--img" loading="lazy">@else<span class="art-ph admin-thumb" aria-hidden="true"></span>@endif
                                 <span class="admin-top-text"><strong>{{ $art->title }}</strong><small>{{ $art->artist->name }}</small></span>
                                 <span class="admin-top-sales">{{ $art->order_items_count }} {{ \Illuminate\Support\Str::plural('sale', $art->order_items_count) }}</span>
                             </li>

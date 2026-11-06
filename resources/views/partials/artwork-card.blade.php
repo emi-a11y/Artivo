@@ -1,5 +1,7 @@
 <article class="card artwork-card border-0 h-100">
-    <a href="{{ route('artwork.show', $art->id) }}" class="art-ph" aria-label="View {{ $art->title }}">Artwork</a>
+    <a href="{{ route('artwork.show', $art->id) }}" class="art-ph{{ $art->image_url ? ' art-ph--img' : '' }}" aria-label="View {{ $art->title }}">
+        @if ($art->image_url)<img src="{{ $art->image_url }}" alt="" class="art-img" loading="lazy">@else Artwork @endif
+    </a>
     <div class="card-body p-0 pt-2">
         <h3 class="artwork-title mb-1">
             <a href="{{ route('artwork.show', $art->id) }}">{{ $art->title }}</a>

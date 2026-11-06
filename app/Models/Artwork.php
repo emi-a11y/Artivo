@@ -13,13 +13,19 @@ class Artwork extends Model
 
     protected $fillable = [
         'title', 'artist_id', 'category_id', 'genre_id', 'price',
-        'file_type', 'resolution', 'file_size', 'description', 'status', 'rating', 'reviews',
+        'file_type', 'resolution', 'file_size', 'description', 'image_path', 'status', 'rating', 'reviews',
     ];
 
     protected $casts = [
         'price' => 'float',
         'rating' => 'float',
     ];
+
+    /** Public URL of the uploaded image, or null when the artwork has none (views fall back to the placeholder). */
+    public function getImageUrlAttribute(): ?string
+    {
+        return $this->image_path ? asset('storage/' . $this->image_path) : null;
+    }
 
     public function artist(): BelongsTo
     {

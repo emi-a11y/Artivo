@@ -16,7 +16,11 @@
         <div class="col-lg-8">
             @forelse ($items as $item)
                 <div class="cart-item d-flex gap-3 align-items-center mb-3">
-                    <div class="art-ph art-ph--cart">Image</div>
+                    @if ($item->image_url)
+                        <div class="art-ph art-ph--cart art-ph--img"><img src="{{ $item->image_url }}" alt="" class="art-img" loading="lazy"></div>
+                    @else
+                        <div class="art-ph art-ph--cart">Image</div>
+                    @endif
                     <div class="flex-grow-1">
                         <h2 class="cart-title mb-1">
                             <a href="{{ route('artwork.show', $item->id) }}">{{ $item->title }}</a>

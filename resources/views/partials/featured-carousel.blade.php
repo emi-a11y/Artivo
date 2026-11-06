@@ -25,8 +25,9 @@
             @foreach ($featured as $art)
                 <article class="feat-slide tone-{{ $loop->index % 3 }} {{ $loop->first ? 'is-active' : '' }}" data-index="{{ $loop->index }}"
                          aria-roledescription="slide" aria-label="{{ $loop->iteration }} of {{ $featured->count() }}">
-                    {{-- Swap this block for <img src="..."> when real artwork images exist --}}
-                    <div class="feat-art" aria-hidden="true"><span>Artwork</span></div>
+                    <div class="feat-art" aria-hidden="true">
+                        @if ($art->image_url)<img src="{{ $art->image_url }}" alt="" loading="lazy">@else<span>Artwork</span>@endif
+                    </div>
 
                     <button type="button" class="feat-jump" aria-label="Show {{ $art->title }}">
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 7l10 10M17 8v9H8"/></svg>

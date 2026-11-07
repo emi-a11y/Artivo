@@ -9,6 +9,8 @@ use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Str;
+use Laravel\Socialite\Facades\Socialite;
+use Throwable;
 
 class AuthController extends Controller
 {
@@ -129,6 +131,65 @@ class AuthController extends Controller
 
         return redirect($this->destination($request, $user))
             ->with('status', 'Account created. Welcome to Artivo, ' . $user->name . '.');
+    }
+
+    /** Send the visitor to Google's sign-in page. */
+    public function redirectToGoogle()
+    {
+        return Socialite::driver('google')->redirect();
+    }
+
+    /** Google sends the visitor back here after they approve (or cancel). */
+    public function handleGoogleCallback(Request $request)
+    {
+        try {
+            $google = Socialite::driver('google')->user();
+        } catch (Throwable $e) {
+            report($e);
+
+            return redirect()->route('login')
+                ->withErrors(['email' => 'Google sign-in was cancelled or failed. Please try again.']);
+        }
+
+        $email = $google->getEmail();
+        $verified = ($google->user['email_verified'] ?? $google->user['verified_email'] ?? false);
+
+        if (! $email || ! $verified) {
+            return redirect()->route('login')
+                ->withErrors(['email' => 'Your Google account does not have a verified email address.']);
+        }
+
+        // Match by Google id first, then by email (links an existing Artivo account to Google).
+        $user = User::where('google_id', $google->getId())->first()
+            ?? User::where('email', $email)->first();
+
+        if ($user && $user->status === 'Blocked') {
+            return redirect()->route('login')
+                ->withErrors(['email' => 'This account has been blocked. Please contact the admin.']);
+        }
+
+        if (! $user) {
+            $user = User::create([
+                'name' => $google->getName() ?: Str::before($email, '@'),
+                'email' => $email,
+                'google_id' => $google->getId(),
+                'avatar' => $google->getAvatar(),
+                'password' => Hash::make(Str::random(40)), // Google users never type a password
+                'role' => 'Buyer',
+                'status' => 'Active',
+            ]);
+        } else {
+            $user->forceFill([
+                'google_id' => $user->google_id ?: $google->getId(),
+                'avatar' => $google->getAvatar() ?: $user->avatar,
+            ])->save();
+        }
+
+        Auth::login($user, true);
+        $request->session()->regenerate();
+
+        return redirect($this->destination($request, $user))
+            ->with('status', 'Welcome, ' . $user->name . '.');
     }
 
     public function logout(Request $request)

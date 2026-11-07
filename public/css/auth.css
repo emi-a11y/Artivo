@@ -112,3 +112,15 @@
     .auth-shake, .auth-shake-field, .auth-warn, .auth-lock-icon, .auth-card .invalid-feedback { animation: none; }
     .auth-lock-bar span { transition: none; }
 }
+
+
+/* ---- Continue with Google ---- */
+.auth-google {
+    display: flex; align-items: center; justify-content: center; gap: .65rem; width: 100%; padding: .6rem 1rem;
+    border: 1px solid var(--artivo-line); border-radius: 8px; background: #fff; color: var(--artivo-dark);
+    font-weight: 600; text-decoration: none; transition: background-color .15s ease, border-color .15s ease, box-shadow .15s ease;
+}
+.auth-google:hover { background: #faf8f3; border-color: var(--artivo-dark); color: var(--artivo-dark); box-shadow: 0 2px 8px rgba(26, 26, 26, .08); }
+.auth-google:focus-visible { outline: 2px solid var(--artivo-orange); outline-offset: 2px; }
+.auth-or { display: flex; align-items: center; gap: .75rem; margin: 1.1rem 0; color: var(--artivo-muted); font-size: .8125rem; }
+.auth-or::before, .auth-or::after { content: ""; flex: 1; height: 1px; background: var(--artivo-line); }

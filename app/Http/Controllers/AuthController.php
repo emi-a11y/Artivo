@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\WelcomeMail;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Str;
 use Laravel\Socialite\Facades\Socialite;
@@ -126,6 +128,8 @@ class AuthController extends Controller
             'status' => 'Active',
         ]);
 
+        $this->sendWelcome($user);
+
         Auth::login($user);
         $request->session()->regenerate();
 
@@ -178,6 +182,8 @@ class AuthController extends Controller
                 'role' => 'Buyer',
                 'status' => 'Active',
             ]);
+
+            $this->sendWelcome($user);
         } else {
             $user->forceFill([
                 'google_id' => $user->google_id ?: $google->getId(),
@@ -199,6 +205,16 @@ class AuthController extends Controller
         $request->session()->regenerateToken();
 
         return redirect()->route('home')->with('status', 'You have been logged out.');
+    }
+
+    /** Send the welcome email. A mail problem must never stop someone from signing up, so errors are only logged. */
+    private function sendWelcome(User $user): void
+    {
+        try {
+            Mail::to($user->email)->send(new WelcomeMail($user));
+        } catch (Throwable $e) {
+            report($e);
+        }
     }
 
     /** Count a wrong attempt; lock the login when the limit is reached. */

@@ -30,12 +30,14 @@ Route::post('/checkout', [CartController::class, 'checkout'])->name('checkout');
 Route::post('/wishlist/{id}', [WishlistController::class, 'toggle'])->whereNumber('id')->name('wishlist.toggle');
 Route::get('/wishlist', [WishlistController::class, 'index'])->middleware('auth')->name('wishlist');
 // ---- Accounts ----
-Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
-Route::post('/login', [AuthController::class, 'login'])->name('login.attempt');
-Route::post('/register', [AuthController::class, 'register'])->name('register');
-Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+// Login, register and logout come from Laravel Breeze's controllers (routes/auth.php).
+   require __DIR__ . '/auth.php';
 Route::get('/auth/google', [AuthController::class, 'redirectToGoogle'])->name('auth.google');
 Route::get('/auth/google/callback', [AuthController::class, 'handleGoogleCallback'])->name('auth.google.callback');
+ // Breeze's dashboard route: signed-out visitors are sent to the login page.
+   Route::get('/dashboard', function () {
+       return redirect(auth()->user()->isAdmin() ? route('admin.dashboard') : route('home'));
+   })->middleware('auth')->name('dashboard');
 Route::get('/orders', [OrderController::class, 'index'])
     ->middleware('auth')
     ->name('orders');

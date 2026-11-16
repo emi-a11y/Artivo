@@ -24,7 +24,7 @@ class AdminController extends Controller
 
         return view('admin.dashboard', [
             'stats' => [
-                ['label' => 'Total Sales', 'value' => '$' . number_format(Order::where('status', 'Paid')->sum('total'), 2), 'note' => 'Paid orders only'],
+                ['label' => 'Total Sales', 'value' => '₱' . number_format(Order::where('status', 'Paid')->sum('total'), 2), 'note' => 'Paid orders only'],
                 ['label' => 'Orders', 'value' => number_format(Order::count()), 'note' => Order::where('status', 'Pending')->count() . ' pending'],
                 ['label' => 'Artworks', 'value' => number_format(Artwork::count()), 'note' => Artwork::where('status', 'Published')->count() . ' published'],
                 ['label' => 'Users', 'value' => number_format(User::count()), 'note' => User::where('role', 'Artist')->count() . ' artists'],
@@ -45,13 +45,22 @@ class AdminController extends Controller
 
         return view('admin.orders', [
             'orders' => $orders,
-            'tabs' => $this->tabs(['All' => null, 'Pending' => 'Pending', 'Paid' => 'Paid', 'Refunded' => 'Refunded'], $status),
+            'tabs' => $this->tabs(['All' => null, 'Pending' => 'Pending', 'Paid' => 'Paid', 'Refunded' => 'Refunded', 'Cancelled' => 'Cancelled'], $status),
         ]);
     }
 
     public function updateOrder(Request $request, Order $order)
     {
         $data = $request->validate(['status' => ['required', Rule::in(Order::STATUSES)]]);
+
+        if ($data['status'] === $order->status) {
+            return back();
+        }
+        // An order cannot be marked Paid here: the payment is confirmed on the Payments page after checking the receipt.
+        if (! in_array($data['status'], $order->adminStatusChoices(), true)) {
+            return back()->with('status', "{$order->code} cannot be changed to {$data['status']} here. Confirm payments on the Payments page.");
+        }
+
         $order->update($data);
 
         return back()->with('status', "{$order->code} is now {$order->status}.");

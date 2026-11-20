@@ -8,7 +8,7 @@
         </h3>
         <p class="artwork-artist mb-2">by {{ $art->artist->name }}</p>
         <div class="d-flex justify-content-between align-items-center">
-            <span class="price">${{ number_format($art->price, 2) }}</span>
+            <span class="price">₱{{ number_format($art->price, 2) }}</span>
             <form action="{{ route('cart.add', $art->id) }}" method="post">
                 @csrf
                 <button type="submit" class="btn btn-outline-primary btn-sm" aria-label="Add {{ $art->title }} to cart">Add</button>

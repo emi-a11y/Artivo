@@ -27,6 +27,8 @@
     @include('partials.featured-carousel')
 
     {{-- Shop by category: fades in from the dark featured band --}}
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <link href="{{ asset('css/category-tiles.css') }}" rel="stylesheet">
     <section class="cat-section" aria-labelledby="catHeading">
         <div class="container">
             <div class="section-head">
@@ -36,7 +38,10 @@
                 @foreach ($categories as $category)
                     <div class="col">
                         <a href="{{ route('browse', ['category' => $category->name]) }}"
-                            class="art-ph art-ph--tile">{{ $category->name }}</a>
+                            class="cat-tile {{ $category->image_url ? '' : 'cat-tile--empty' }}" @if ($category->image_url)
+                            style="background-image: url('{{ $category->image_url }}')" @endif>
+                            <span class="cat-tile-name">{{ $category->name }}</span>
+                        </a>
                     </div>
                 @endforeach
             </div>
@@ -48,12 +53,12 @@
         <section class="mb-5" aria-labelledby="artistHeading">
             <div class="section-head">
                 <h2 id="artistHeading">Top Artists</h2>
-                <a href="{{ route('page.show', 'artists') }}" class="view-all">View all</a>
+                <a href="{{ route('artists') }}" class="view-all">View all</a>
             </div>
             <div class="row row-cols-2 row-cols-sm-3 row-cols-lg-5 g-4 text-center">
                 @foreach ($artists as $artist)
                     <div class="col">
-                        <a href="{{ route('page.show', 'artists') }}" class="artist-link">
+                        <a href="{{ route('artists') }}" class="artist-link">
                             <span class="avatar" aria-hidden="true"></span>
                             <span class="d-block artist-name">{{ $artist->name }}</span>
                             <span class="d-block artist-count">{{ $artist->artworks_count }}

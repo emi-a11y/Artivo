@@ -7,14 +7,6 @@
     padding: 2.5rem 3rem; color: #fff; position: relative; overflow: hidden;
     background: var(--artivo-dark);
 }
-.auth-brand::before {
-    content: ""; position: absolute; width: 420px; height: 420px; border-radius: 50%;
-    right: -140px; bottom: -120px; background: var(--artivo-orange); opacity: .9;
-}
-.auth-brand::after {
-    content: ""; position: absolute; width: 130px; height: 130px; border-radius: 50%;
-    right: 70px; bottom: 150px; background: var(--artivo-yellow); opacity: .9;
-}
 .auth-brand > * { position: relative; z-index: 1; }
 .auth-logo img { display: block; height: 36px; width: auto; }
 .auth-brand-body h1 { font-size: 2.1rem; font-weight: 700; line-height: 1.2; margin-bottom: 1.5rem; }

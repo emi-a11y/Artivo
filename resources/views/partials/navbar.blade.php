@@ -23,7 +23,7 @@
                         href="{{ route('browse') }}" {!! request()->routeIs('browse', 'artwork.show') ? 'aria-current="page"' : '' !!}>Browse</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ route('page.show', 'artists') }}">Artists</a>
+                    <a class="nav-link" href="{{ route('artists') }}">Artists</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link {{ request()->routeIs('cart') ? 'active' : '' }}" href="{{ route('cart') }}" {!! request()->routeIs('cart') ? 'aria-current="page"' : '' !!}>Cart ({{ $cartCount }})</a>
@@ -36,6 +36,7 @@
                                 {{ \Illuminate\Support\Str::limit(auth()->user()->name, 18) }}
                             </button>
                             <ul class="dropdown-menu dropdown-menu-end">
+                                <li><a class="dropdown-item" href="{{ route('orders') }}">My Orders</a></li>
                                 <li><a class="dropdown-item" href="{{ route('wishlist') }}">My Wishlist</a></li>
                                 @if (auth()->user()->isAdmin())
                                     <li><a class="dropdown-item" href="{{ route('admin.dashboard') }}">Admin dashboard</a></li>

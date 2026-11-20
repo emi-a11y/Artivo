@@ -39,7 +39,7 @@
                         <p class="feat-artist">by {{ $art->artist->name }}</p>
                         <p class="feat-desc">{{ \Illuminate\Support\Str::limit($art->description ?: 'An original digital artwork from the Artivo community.', 110) }}</p>
                         <div class="feat-foot">
-                            <span class="feat-price">${{ number_format($art->price, 2) }}</span>
+                            <span class="feat-price">₱{{ number_format($art->price, 2) }}</span>
                             <span class="feat-rating">{{ number_format($art->rating, 1) }} <small>({{ $art->reviews }})</small></span>
                         </div>
                         <div class="feat-actions">

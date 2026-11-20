@@ -39,6 +39,15 @@
                                 {{ $item->title }}
                             @endif
                             <small class="d-block text-secondary-dark">{{ $item->license }}</small>
+                            @if ($order->status === 'Paid')
+                                @if ($item->artwork?->image_path)
+                                    @php $bits = collect([$item->artwork->file_type, $item->artwork->resolution, $item->artwork->file_size])->filter()->implode(' · '); @endphp
+                                    <a href="{{ route('orders.download', [$order, $item->id]) }}" class="btn btn-primary btn-sm px-3 mt-2">Download file</a>
+                                    @if ($bits)<small class="text-secondary-dark ms-2">{{ $bits }}</small>@endif
+                                @else
+                                    <small class="d-block text-secondary-dark mt-1">File not available yet</small>
+                                @endif
+                            @endif
                         </span>
                         <span class="price">₱{{ number_format($item->price, 2) }}</span>
                     </li>

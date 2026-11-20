@@ -81,7 +81,7 @@ class AdminData
 
         return [
             'stats' => [
-                ['label' => 'Total Sales', 'value' => '$12,480', 'note' => '+8% this month'],
+                ['label' => 'Total Sales', 'value' => '₱12,480', 'note' => '+8% this month'],
                 ['label' => 'Orders', 'value' => '342', 'note' => '+8% this month'],
                 ['label' => 'Artworks', 'value' => '1,208', 'note' => '+8% this month'],
                 ['label' => 'Users', 'value' => '2,415', 'note' => '+8% this month'],

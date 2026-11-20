@@ -29,7 +29,7 @@
                         <p class="small text-secondary-dark mb-0">{{ $item->license }}</p>
                     </div>
                     <div class="text-end">
-                        <p class="price mb-1">${{ number_format($item->price, 2) }}</p>
+                        <p class="price mb-1">₱{{ number_format($item->price, 2) }}</p>
                         <form action="{{ route('cart.remove', $item->id) }}" method="post">
                             @csrf
                             @method('DELETE')
@@ -47,10 +47,10 @@
         <aside class="col-lg-4">
             <div class="order-summary">
                 <h2 class="fs-5 fw-semibold mb-3">Order Summary</h2>
-                <div class="d-flex justify-content-between mb-2"><span>Subtotal</span><span>${{ number_format($subtotal, 2) }}</span></div>
-                <div class="d-flex justify-content-between mb-3"><span>Service fee</span><span>${{ number_format($fee, 2) }}</span></div>
+                <div class="d-flex justify-content-between mb-2"><span>Subtotal</span><span>₱{{ number_format($subtotal, 2) }}</span></div>
+                <div class="d-flex justify-content-between mb-3"><span>Service fee</span><span>₱{{ number_format($fee, 2) }}</span></div>
                 <hr>
-                <div class="d-flex justify-content-between fw-bold mb-3"><span>Total</span><span class="price">${{ number_format($total, 2) }}</span></div>
+                <div class="d-flex justify-content-between fw-bold mb-3"><span>Total</span><span class="price">₱{{ number_format($total, 2) }}</span></div>
 
                 <label for="promo" class="visually-hidden">Promo code</label>
                 <input type="text" id="promo" class="form-control mb-3" placeholder="Promo code (not available yet)" disabled>
@@ -58,7 +58,7 @@
                     @csrf
                     <button type="submit" class="btn btn-primary w-100 py-2" @disabled($items->isEmpty())>Proceed to Checkout</button>
                 </form>
-                <p class="small text-secondary-dark text-center mb-0 mt-3">Payment is simulated. Your order is saved to the database.</p>
+                <p class="small text-secondary-dark text-center mb-0 mt-3">You will pay with a QR code on the next page.</p>
             </div>
         </aside>
     </div>

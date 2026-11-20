@@ -13,7 +13,7 @@ class Artwork extends Model
 
     protected $fillable = [
         'title', 'artist_id', 'category_id', 'genre_id', 'price',
-        'file_type', 'resolution', 'file_size', 'description', 'image_path', 'status', 'rating', 'reviews',
+        'file_type', 'resolution', 'file_size', 'description', 'image_path', 'original_path', 'status', 'rating', 'reviews',
     ];
 
     protected $casts = [

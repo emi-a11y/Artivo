@@ -77,6 +77,7 @@
         }
         Object.keys(fields).forEach(function (key) {
             var el = document.getElementById(fields[key]);
+            if (!el) { return; }
             var value = editing && data[key] !== null && data[key] !== undefined ? data[key] : '';
             if (!editing) {
                 if (key === 'price') { value = '12.00'; }

@@ -6,6 +6,9 @@
                     @include('partials.logo', ['height' => 32])
                 </a>
                 <p class="footer-tagline mb-0 mt-2">Digital Art Marketplace</p>
+                @if ($contact = \App\Models\Setting::get('contact_email'))
+                    <p class="footer-tagline mb-0"><a href="mailto:{{ $contact }}">{{ $contact }}</a></p>
+                @endif
             </div>
             <ul class="list-inline mb-0 footer-links">
                 <li class="list-inline-item"><a href="{{ route('page.show', 'about') }}">About</a></li>

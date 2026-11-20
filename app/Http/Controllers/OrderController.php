@@ -10,7 +10,7 @@ class OrderController extends Controller
     public function index(Request $request)
     {
         $orders = $request->user()->orders()
-            ->with('items')
+            ->with('items.artwork')
             ->latest()->latest('id')
             ->paginate(5)->withQueryString();
 

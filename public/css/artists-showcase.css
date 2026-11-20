@@ -1,0 +1,103 @@
+/* ==========================================================================
+   Artists page: sliding showcase. Same palette and backdrop as the home page
+   featured band: orange #FF6200, yellow #FFCC00, charcoal #1A1A1A.
+   ========================================================================== */
+@import url('https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700&display=swap');
+
+.artists-band {
+    --sw: 300px; --sh: 440px; --gap: 22px;   /* set by artists-showcase.js */
+    position: relative; overflow: hidden; color: #fff;
+    padding: 3rem 0 2.5rem;
+    background:
+        radial-gradient(760px 340px at 50% 70%, rgba(255, 98, 0, 0.16), transparent 70%),
+        var(--artivo-dark);
+}
+.artists-title {
+    margin: 0; color: #fff; font-family: 'Bricolage Grotesque', 'Inter', system-ui, sans-serif;
+    font-size: clamp(2rem, 1.4rem + 2.4vw, 3.2rem); font-weight: 700; letter-spacing: -0.01em;
+}
+.artists-count { margin: 0.5rem 0 0; font-size: 0.8125rem; color: rgba(255, 255, 255, 0.6); font-variant-numeric: tabular-nums; }
+
+/* ---- Stage -------------------------------------------------------------- */
+.artists-stage { position: relative; margin-top: 1.5rem; }
+.artists-viewport {
+    overflow: hidden; touch-action: pan-y;
+    -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 9%, #000 91%, transparent 100%);
+            mask-image: linear-gradient(90deg, transparent 0, #000 9%, #000 91%, transparent 100%);
+}
+.artists-track {
+    display: flex; gap: var(--gap); width: max-content; padding: 1.5rem 0 3.6rem;
+    transition: transform 0.65s cubic-bezier(0.22, 0.8, 0.3, 1); will-change: transform;
+}
+
+/* ---- One artist ---------------------------------------------------------- */
+.artist-slide {
+    position: relative; flex: 0 0 auto; width: var(--sw); height: var(--sh);
+    border-radius: 24px; overflow: hidden; cursor: pointer; background: #111;
+    transform-origin: 50% 100%; transform: scale(0.78); opacity: 0.55;
+    transition: transform 0.65s cubic-bezier(0.22, 0.8, 0.3, 1), opacity 0.45s ease;
+}
+.artist-slide.is-active { transform: scale(1); opacity: 1; cursor: default; }
+@media (hover: hover) {
+    .artist-slide:not(.is-active):hover { opacity: 0.85; }
+}
+
+.artist-photo {
+    position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
+    background: linear-gradient(160deg, var(--tone-a), var(--tone-b));
+}
+.artist-photo img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; user-select: none; }
+.tone-0 { --tone-a: #8a3200; --tone-b: #2b1100; }
+.tone-1 { --tone-a: #6b5600; --tone-b: #231c00; }
+.tone-2 { --tone-a: #3a3a3a; --tone-b: #121212; }
+.artist-initial {
+    font-family: 'Bricolage Grotesque', 'Inter', system-ui, sans-serif; font-size: 7rem; font-weight: 700;
+    color: rgba(255, 255, 255, 0.22); margin-top: -4rem;
+}
+/* Gradient fade: the picture dissolves into the page colour at the bottom. */
+.artist-photo::after {
+    content: ""; position: absolute; inset: auto 0 0 0; height: 68%;
+    background: linear-gradient(to top, var(--artivo-dark) 0%, rgba(26, 26, 26, 0.88) 28%, rgba(26, 26, 26, 0) 100%);
+}
+
+.artist-info { position: absolute; left: 0; right: 0; bottom: 0; padding: 0 1.2rem 1.3rem; text-align: center; z-index: 1; }
+.artist-name {
+    margin: 0; font-family: 'Bricolage Grotesque', 'Inter', system-ui, sans-serif; font-size: 1.7rem; font-weight: 700;
+    line-height: 1.1; letter-spacing: -0.01em; color: #fff; text-shadow: 0 2px 12px rgba(0, 0, 0, 0.5);
+}
+.artist-meta { margin: 0.35rem 0 0; font-size: 0.75rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--artivo-yellow); }
+.artist-cta { margin-top: 0.85rem; opacity: 0; visibility: hidden; transform: translateY(8px); transition: opacity 0.35s ease, transform 0.35s ease, visibility 0s linear 0.35s; }
+.artist-slide.is-active .artist-cta { opacity: 1; visibility: visible; transform: none; transition: opacity 0.45s ease 0.3s, transform 0.45s ease 0.3s, visibility 0s; }
+
+/* ---- Platform glow under the open artist ------------------------------- */
+.artists-platform {
+    position: absolute; left: 50%; bottom: 1.4rem; transform: translateX(-50%);
+    width: calc(var(--sw) * 1.15); height: 44px; border-radius: 50%; pointer-events: none;
+    border: 3px solid rgba(255, 204, 0, 0.85);
+    background: radial-gradient(ellipse at center, rgba(255, 98, 0, 0.35), rgba(26, 26, 26, 0) 70%);
+    box-shadow: 0 0 22px rgba(255, 204, 0, 0.45), inset 0 0 18px rgba(255, 98, 0, 0.35);
+}
+
+/* ---- Arrows -------------------------------------------------------------- */
+.artists-arrow {
+    position: absolute; top: 50%; transform: translateY(-50%); z-index: 3;
+    width: 52px; height: 52px; border-radius: 14px; display: inline-flex; align-items: center; justify-content: center;
+    color: #fff; background: rgba(255, 255, 255, 0.1); border: 1.5px solid rgba(255, 255, 255, 0.45); cursor: pointer;
+    backdrop-filter: blur(4px);
+    transition: background-color 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+}
+.artists-arrow--prev { left: clamp(10px, 3vw, 48px); }
+.artists-arrow--next { right: clamp(10px, 3vw, 48px); }
+.artists-arrow:hover { background: var(--artivo-orange); border-color: var(--artivo-orange); }
+.artists-arrow:active { transform: translateY(-50%) scale(0.92); }
+.artists-arrow:focus-visible { outline: 2px solid var(--artivo-yellow); outline-offset: 3px; }
+
+@media (max-width: 575.98px) {
+    .artists-band { padding-top: 2rem; }
+    .artist-name { font-size: 1.35rem; }
+    .artist-initial { font-size: 5rem; }
+    .artists-arrow { width: 42px; height: 42px; border-radius: 12px; }
+}
+@media (prefers-reduced-motion: reduce) {
+    .artists-track, .artist-slide, .artist-cta { transition: none; }
+}

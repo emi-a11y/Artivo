@@ -6,7 +6,7 @@
     @php
         // One small icon per stat card (same order as $stats: sales, orders, artworks, users).
         $icons = [
-            '<path d="M12 3v18M16.5 7.5C16.5 6 14.5 5 12 5S7.5 6.2 7.5 8s2 2.6 4.5 3 4.5 1.2 4.5 3-2 3-4.5 3-4.5-1-4.5-2.5"/>',
+            '<path d="M8 20V4h5.5a4 4 0 010 8H8M5 8h11M5 11h11"/>',
             '<path d="M6 7h12l-1 12H7L6 7zM9 7a3 3 0 016 0"/>',
             '<rect x="3.5" y="4.5" width="17" height="15" rx="2"/><circle cx="9" cy="10" r="1.6"/><path d="M4 17l5-4.5 4 3.5 3-2.5 4 3.5"/>',
             '<circle cx="9" cy="8.5" r="3.2"/><path d="M3.5 19c.6-3.2 2.7-5 5.5-5s4.9 1.8 5.5 5M16 6a3 3 0 010 5.8M17.5 14.3c1.8.6 3 2.2 3.5 4.7"/>',
@@ -39,9 +39,9 @@
                     <h2 class="admin-card-title">Sales Overview</h2>
                     <div class="admin-chart" role="img" aria-label="Bar chart of paid sales for the last six months">
                         @foreach ($chart as $bar)
-                            <div class="admin-bar-col" title="{{ $bar['label'] }}: ${{ number_format($bar['value'], 2) }}">
+                            <div class="admin-bar-col" title="{{ $bar['label'] }}: ₱{{ number_format($bar['value'], 2) }}">
                                 <div class="admin-bar-track">
-                                    <span class="admin-bar-value" style="bottom: {{ $bar['height'] }}%">${{ number_format($bar['value'], 0) }}</span>
+                                    <span class="admin-bar-value" style="bottom: {{ $bar['height'] }}%">₱{{ number_format($bar['value'], 0) }}</span>
                                     <span class="admin-bar" style="height: {{ $bar['height'] }}%"></span>
                                 </div>
                                 <span class="admin-bar-label">{{ $bar['label'] }}</span>

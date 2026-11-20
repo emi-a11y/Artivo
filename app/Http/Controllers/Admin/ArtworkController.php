@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Support\ArtworkImages;
 use App\Http\Controllers\Controller;
 use App\Models\Artwork;
 use App\Models\Category;
@@ -55,10 +56,7 @@ class ArtworkController extends Controller
     public function destroy(Artwork $artwork)
     {
         $title = $artwork->title;
-        if ($artwork->image_path) {
-            Storage::disk('public')->delete($artwork->image_path);
-        }
-        $artwork->delete();
+        ArtworkImages::delete($artwork);
 
         return redirect()->route('admin.artworks')->with('status', "\"{$title}\" was deleted.");
     }
@@ -71,7 +69,7 @@ class ArtworkController extends Controller
             'category_id' => ['required', 'exists:categories,id'],
             'genre_id' => ['required', 'exists:genres,id'],
             'price' => ['required', 'numeric', 'min:0', 'max:9999'],
-            'status' => ['required', Rule::in(Artwork::STATUSES)],
+            'status' => ['nullable', Rule::in(Artwork::STATUSES)],
             'description' => ['nullable', 'string', 'max:1000'],
             // The image is optional on edit (keeps the current one) and on add (shows the placeholder).
             'image' => ['nullable', 'file', 'image', 'mimes:jpg,jpeg,png,webp,gif', 'max:102400'], // 100 MB
@@ -104,8 +102,10 @@ class ArtworkController extends Controller
 
         $data['image_path'] = $file->store('artworks', 'public');
 
-        if ($existing && $existing->image_path) {
-            Storage::disk('public')->delete($existing->image_path);
+        $data = array_merge($data, ArtworkImages::store($file));
+
+        if ($existing) {
+            ArtworkImages::delete($existing);
         }
 
         return $data;

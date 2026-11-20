@@ -20,6 +20,7 @@ class User extends Authenticatable
         'email',
         'google_id',
         'avatar',
+        'photo_path',
         'password',
         'role',
         'status',
@@ -37,6 +38,11 @@ class User extends Authenticatable
     public function isAdmin(): bool
     {
         return $this->role === 'Admin';
+    }
+
+    public function getPhotoUrlAttribute(): ?string
+    {
+        return $this->photo_path ? asset('storage/' . $this->photo_path) : null;
     }
 
     public function artworks(): HasMany

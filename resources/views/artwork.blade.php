@@ -50,7 +50,7 @@
                     {{ \Illuminate\Support\Str::plural('review', $art->reviews) }})@else New artwork, no reviews yet @endif
                 </p>
                 <hr>
-                <p class="detail-price my-3">${{ number_format($art->price, 2) }}</p>
+                <p class="detail-price my-3">₱{{ number_format($art->price, 2) }}</p>
 
                 <form action="{{ route('cart.add', $art->id) }}" method="post">
                     @csrf

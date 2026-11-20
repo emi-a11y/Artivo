@@ -19,12 +19,17 @@ class PageController extends Controller
         return Artwork::with(['artist', 'category', 'genre'])->where('status', 'Published');
     }
 
+    /** Home page sections only show artworks that have an uploaded image. */
+private function withImage()
+{
+    return $this->published()->whereNotNull('image_path')->where('image_path', '!=', '');
+}
     public function home()
     {
         return view('home', [
             'categories' => Category::orderBy('id')->get(),
-            'featured' => $this->published()->orderByDesc('rating')->orderByDesc('reviews')->take(5)->get(),
-            'newArrivals' => $this->published()->latest()->latest('id')->take(5)->get(),
+            'featured' => $this->withImage()->orderByDesc('rating')->orderByDesc('reviews')->take(5)->get(),
+            'newArrivals' => $this->withImage()->latest()->latest('id')->take(5)->get(),
             'artists' => User::where('role', 'Artist')
                 ->withCount(['artworks' => fn ($q) => $q->where('status', 'Published')])
                 ->orderByDesc('artworks_count')->orderBy('name')->take(5)->get(),

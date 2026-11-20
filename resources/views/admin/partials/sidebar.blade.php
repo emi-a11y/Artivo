@@ -5,9 +5,11 @@
         ['Categories', route('admin.categories'), request()->routeIs('admin.categories')],
         ['Genres', route('admin.genres'), request()->routeIs('admin.genres')],
         ['Orders', route('admin.orders'), request()->routeIs('admin.orders')],
+        ['Payments', route('admin.payments'), request()->routeIs('admin.payments*'), \App\Models\Order::where('status', 'Pending')->whereNotNull('payment_submitted_at')->count()],
+        ['Payment methods', route('admin.methods'), request()->routeIs('admin.methods*')],
         ['Users', route('admin.users'), request()->routeIs('admin.users')],
-        ['Reports', route('admin.page', 'reports'), request()->is('admin/page/reports')],
-        ['Settings', route('admin.page', 'settings'), request()->is('admin/page/settings')],
+        ['Artists', route('admin.artists'), request()->routeIs('admin.artists')],
+        ['Settings', route('admin.settings'), request()->routeIs('admin.settings')],
     ];
 @endphp
 <a href="{{ route('admin.dashboard') }}" class="admin-brand" aria-label="Artivo admin dashboard">
@@ -16,10 +18,13 @@
 </a>
 <nav class="admin-nav" aria-label="Admin sections">
     <ul class="nav flex-column">
-        @foreach ($items as [$label, $url, $active])
+        @foreach ($items as $item)
+            @php [$label, $url, $active] = $item;
+            $count = $item[3] ?? 0; @endphp
             <li class="nav-item">
                 <a class="nav-link admin-nav-link {{ $active ? 'active' : '' }}" href="{{ $url }}" @if ($active)
-                aria-current="page" @endif>{{ $label }}</a>
+                aria-current="page" @endif>{{ $label }}@if (!empty($count)) <span
+                    class="badge text-bg-warning ms-1">{{ $count }}</span>@endif</a>
             </li>
         @endforeach
     </ul>

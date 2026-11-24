@@ -27,15 +27,12 @@ class ArtistPhotoController extends Controller
         $data = $request->validateWithBag('artistPhoto', [
             'name' => ['required', 'string', 'max:60'],
             'email' => ['required', 'email', 'max:255', 'unique:users,email'],
-            'password' => ['required', 'string', 'min:8', 'max:72'],
             'photo' => ['nullable', 'file', 'image', 'mimes:jpg,jpeg,png,webp', 'max:5120'],
         ], [
             'name.required' => 'The artist name is required.',
             'email.required' => 'The email is required.',
             'email.email' => 'Enter a valid email address.',
             'email.unique' => 'That email is already used by another account.',
-            'password.required' => 'A password is required.',
-            'password.min' => 'The password must be at least 8 characters.',
             'photo.max' => 'The picture must be 5 MB or smaller.',
             'photo.image' => 'The file must be an image (JPG, PNG or WEBP).',
             'photo.mimes' => 'The picture must be a JPG, PNG or WEBP file.',
@@ -44,7 +41,7 @@ class ArtistPhotoController extends Controller
         $user = User::create([
             'name' => trim($data['name']),
             'email' => strtolower($data['email']),
-            'password' => Hash::make($data['password']),
+            'password' => Hash::make(\Illuminate\Support\Str::random(32)),
             'role' => 'Artist',
             'status' => 'Active',
         ]);
@@ -104,5 +101,22 @@ class ArtistPhotoController extends Controller
         }
 
         return back()->with('status', "Picture for {$user->name} was removed.");
+    }
+        /** Deletes an artist account, only when it has no artworks. */
+    public function delete(User $user)
+    {
+        abort_unless($user->role === 'Artist', 404);
+
+        if ($user->artworks()->count() > 0) {
+            return back()->with('status', "{$user->name} still has artworks. Delete or reassign them first.");
+        }
+
+        if ($user->photo_path) {
+            Storage::disk('public')->delete($user->photo_path);
+        }
+        $name = $user->name;
+        $user->delete();
+
+        return back()->with('status', "Artist {$name} was deleted.");
     }
 }

@@ -60,8 +60,13 @@ Route::middleware('auth')->group(function () {
     Route::post('/orders/{order}/pay', [PaymentController::class, 'submit'])->whereNumber('order')->name('orders.pay.submit');
     Route::post('/orders/{order}/cancel', [PaymentController::class, 'cancel'])->whereNumber('order')->name('orders.cancel');
     Route::get('/orders/{order}/receipt', [PaymentController::class, 'receipt'])->whereNumber('order')->name('orders.receipt');
+    Route::post('/orders/{order}/receipt/email', [\App\Http\Controllers\ReceiptEmailController::class, 'send'])->middleware('throttle:3,1')->whereNumber('order')->name('orders.receipt.email');
+    Route::post('/email/verify-address', [\App\Http\Controllers\EmailVerificationController::class, 'send'])->middleware('throttle:3,1')->name('email.verify.send');
     Route::get('/orders/{order}/items/{item}/download', [DownloadController::class, 'show'])->whereNumber(['order', 'item'])->name('orders.download');
+    Route::get('/receipts', [\App\Http\Controllers\ReceiptInboxController::class, 'index'])->name('receipts');
 });
+
+Route::get('/email/verify-address/{id}/{hash}', [\App\Http\Controllers\EmailVerificationController::class, 'confirm'])->middleware('signed')->whereNumber('id')->name('email.verify.confirm');
 
 Route::get('/orders', [OrderController::class, 'index'])
     ->middleware('auth')
@@ -110,6 +115,7 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', EnsureAdmin::class])
 
     Route::patch('/artists/{user}/name', [ArtistPhotoController::class, 'rename'])->whereNumber('user')->name('artists.rename');
     Route::post('/artists', [ArtistPhotoController::class, 'add'])->name('artists.add');
+    Route::delete('/artists/{user}', [ArtistPhotoController::class, 'delete'])->whereNumber('user')->name('artists.delete');
 
     Route::get('/settings', [SettingsController::class, 'show'])->name('settings');
     Route::patch('/settings/profile', [SettingsController::class, 'profile'])->name('settings.profile');

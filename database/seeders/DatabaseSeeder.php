@@ -5,7 +5,6 @@ namespace Database\Seeders;
 use App\Models\Artwork;
 use App\Models\Category;
 use App\Models\Genre;
-use App\Models\Order;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
@@ -29,11 +28,9 @@ class DatabaseSeeder extends Seeder
             'hana' => $account('Hana Park', 'hana@artivo.test', 'Artist'),
             'dev' => $account('Dev Pillai', 'dev@artivo.test', 'Artist'),
         ];
-        $buyers = [
-            $account('Maria Santos', 'maria@artivo.test', 'Buyer'),
-            $account('John Reyes', 'john@artivo.test', 'Buyer'),
-            $account('Aira Cruz', 'aira@artivo.test', 'Buyer'),
-        ];
+        $account('Maria Santos', 'maria@artivo.test', 'Buyer');
+        $account('John Reyes', 'john@artivo.test', 'Buyer');
+        $account('Aira Cruz', 'aira@artivo.test', 'Buyer');
 
         $categories = [];
         foreach (['Illustration', 'Photography', 'Pixel Art', 'Vectors'] as $name) {
@@ -67,10 +64,9 @@ class DatabaseSeeder extends Seeder
             ['Mountain Mist at Dawn', 'mika', 15, 'Photography', 'Minimalist', '62 MB', 4.6, 23, 'A quiet ridge line wrapped in morning fog, shot in soft natural light. Delivered as JPG and RAW.'],
         ];
 
-        $art = [];
-        foreach ($rows as $i => [$title, $artist, $price, $category, $genre, $size, $rating, $reviews, $description]) {
+        foreach ($rows as [$title, $artist, $price, $category, $genre, $size, $rating, $reviews, $description]) {
             [$fileType, $resolution] = $formats[$category];
-            $art[$i + 1] = Artwork::create([
+            Artwork::create([
                 'title' => $title,
                 'artist_id' => $artists[$artist]->id,
                 'category_id' => $categories[$category]->id,
@@ -85,12 +81,5 @@ class DatabaseSeeder extends Seeder
                 'reviews' => $reviews,
             ]);
         }
-
-        // Four sample orders spread over the last months (feeds the dashboard chart).
-        $licence = 'Personal license';
-        Order::place($buyers[0], [['artwork' => $art[4], 'license' => $licence]], 'Paid', now()->subMonths(4)->day(12));
-        Order::place($buyers[1], [['artwork' => $art[2], 'license' => $licence], ['artwork' => $art[3], 'license' => $licence]], 'Paid', now()->subMonths(2)->day(8));
-        Order::place($buyers[2], [['artwork' => $art[1], 'license' => 'Commercial license']], 'Refunded', now()->subMonth()->day(20));
-        Order::place($buyers[0], [['artwork' => $art[4], 'license' => $licence], ['artwork' => $art[5], 'license' => $licence]], 'Pending', now()->subDays(2));
     }
 }

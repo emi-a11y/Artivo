@@ -69,6 +69,7 @@
         method.disabled = !editing;
         idInput.value = editing ? data.id : '';
         label.textContent = editing ? 'Edit Artwork' : 'Add Artwork';
+        imgInput.required = !editing;   // image is required only when adding a new artwork
         if (editing && data.image_url) {
             var bits = [data.file_type, data.resolution, data.file_size].filter(Boolean).join(' · ');
             resetImage(data.image_url, 'Current image' + (bits ? ': ' + bits : '') + '. Choose a file to replace it.');

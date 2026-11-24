@@ -14,16 +14,15 @@
         .receipt-paid { border: 2px solid #FF6200; color: #FF6200; font-weight: 700; letter-spacing: .12em; padding: .25rem .9rem; border-radius: 6px; display: inline-block; }
         .receipt table td, .receipt table th { padding: .6rem 0; }
         .muted { color: #666; }
-        @media print {
-            body { background: #fff; }
-            .receipt { border: 0; margin: 0; padding: 0; max-width: none; }
-            .no-print { display: none !important; }
-        }
+        .receipt-note { background: #fff1e6; color: #7a3300; border-radius: 10px; padding: .75rem 1rem; font-size: .9rem; }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="receipt">
+            @if (session('status'))
+                <div class="receipt-note mb-4" role="status">{{ session('status') }}</div>
+            @endif
             <div class="d-flex justify-content-between align-items-start flex-wrap gap-3 mb-4">
                 <div>
                     <div class="receipt-brand">ART<span>I</span>VO</div>
@@ -78,10 +77,29 @@
 
             <p class="small muted mt-4 mb-0">Thank you for supporting independent artists. School project prototype, not an official tax receipt.</p>
 
-            <div class="mt-4 d-flex gap-2 no-print">
-                <button type="button" class="btn btn-dark" onclick="window.print()">Print or save as PDF</button>
+            @php $verified = \App\Support\ReceiptMailer::isVerified($order->user); @endphp
+            <div class="mt-4 d-flex flex-wrap gap-2">
+                @if ($verified)
+                    <form method="post" action="{{ route('orders.receipt.email', $order) }}">
+                        @csrf
+                        <button type="submit" class="btn btn-dark">{{ $order->receipt_emailed_at ? 'Send the email again' : 'Email me a copy' }}</button>
+                    </form>
+                @else
+                    <form method="post" action="{{ route('email.verify.send') }}">
+                        @csrf
+                        <button type="submit" class="btn btn-dark">Verify my email to receive receipts</button>
+                    </form>
+                @endif
                 <a href="{{ route('orders') }}" class="btn btn-outline-dark">Back to My Orders</a>
             </div>
+            <p class="small muted mt-3 mb-0">
+                @if ($order->receipt_emailed_at)
+                    A copy was emailed to {{ $order->user->email }} on {{ \Illuminate\Support\Carbon::parse($order->receipt_emailed_at)->format('F j, Y g:i A') }}.
+                @elseif (! $verified)
+                    {{ $order->user->email }} has not been verified yet, so receipts are not emailed to it.
+                @endif
+                This receipt always stays available here in your account under My Orders.
+            </p>
         </div>
     </div>
 </body>

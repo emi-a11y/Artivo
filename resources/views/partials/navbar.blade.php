@@ -25,9 +25,11 @@
                 <li class="nav-item">
                     <a class="nav-link" href="{{ route('artists') }}">Artists</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link {{ request()->routeIs('cart') ? 'active' : '' }}" href="{{ route('cart') }}" {!! request()->routeIs('cart') ? 'aria-current="page"' : '' !!}>Cart ({{ $cartCount }})</a>
-                </li>
+                @if (!auth()->check() || !auth()->user()->isAdmin())
+                    <li class="nav-item">
+                        <a class="nav-link {{ request()->routeIs('cart') ? 'active' : '' }}" href="{{ route('cart') }}" {!! request()->routeIs('cart') ? 'aria-current="page"' : '' !!}>Cart ({{ $cartCount }})</a>
+                    </li>
+                @endif
                 <li class="nav-item mt-2 mt-lg-0">
                     @auth
                         <div class="dropdown">
@@ -36,10 +38,14 @@
                                 {{ \Illuminate\Support\Str::limit(auth()->user()->name, 18) }}
                             </button>
                             <ul class="dropdown-menu dropdown-menu-end">
-                                <li><a class="dropdown-item" href="{{ route('orders') }}">My Orders</a></li>
-                                <li><a class="dropdown-item" href="{{ route('wishlist') }}">My Wishlist</a></li>
                                 @if (auth()->user()->isAdmin())
                                     <li><a class="dropdown-item" href="{{ route('admin.dashboard') }}">Admin dashboard</a></li>
+                                @else
+                                    <li><a class="dropdown-item" href="{{ route('orders') }}">My Orders</a></li>
+                                    <li><a class="dropdown-item" href="{{ route('receipts') }}">My Receipts
+                                            @if (($n = auth()->user()->unreadNotifications()->count()) > 0)<span
+                                            class="badge text-bg-warning ms-1">{{ $n }}</span>@endif</a></li>
+                                    <li><a class="dropdown-item" href="{{ route('wishlist') }}">My Wishlist</a></li>
                                 @endif
                                 <li>
                                     <form action="{{ route('logout') }}" method="post">

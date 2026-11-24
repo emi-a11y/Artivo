@@ -195,7 +195,7 @@
                             </select>
                         </div>
                         <div class="col-6"><label for="fPrice" class="form-label">Price (₱)</label><input id="fPrice"
-                                name="price" type="number" min="0" step="0.01" class="form-control"
+                                name="price" type="number" min="1" step="0.01" class="form-control"
                                 value="{{ old('price', '12.00') }}" required></div>
                         <div class="col-6"><label for="fCategory" class="form-label">Category</label>
                             <select id="fCategory" name="category_id" class="form-select"

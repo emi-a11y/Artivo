@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Order;
+use App\Support\ReceiptMailer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -50,8 +51,11 @@ class PaymentReviewController extends Controller
             return $o;
         });
 
+        // The receipt always goes to the buyer's account. It is also emailed when they have a verified, real email.
+        $emailed = $result ? ReceiptMailer::deliver($result) : false;
+
         return back()->with('status', $result
-            ? "{$result->code} is now Paid."
+            ? "{$result->code} is now Paid." . ($emailed ? ' The receipt was saved in the buyer\'s account and emailed to them.' : ' The receipt was saved in the buyer\'s account only (no verified email).')
             : 'That payment was already reviewed.');
     }
 

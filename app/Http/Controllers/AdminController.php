@@ -45,7 +45,7 @@ class AdminController extends Controller
 
         return view('admin.orders', [
             'orders' => $orders,
-            'tabs' => $this->tabs(['All' => null, 'Pending' => 'Pending', 'Paid' => 'Paid', 'Refunded' => 'Refunded', 'Cancelled' => 'Cancelled'], $status),
+            'tabs' => $this->tabs(['All' => null, 'Pending' => 'Pending', 'Paid' => 'Paid', 'Cancelled' => 'Cancelled'], $status),
         ]);
     }
 

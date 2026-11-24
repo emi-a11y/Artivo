@@ -17,6 +17,9 @@ class CartController extends Controller
         $artwork = Artwork::where('status', 'Published')->findOrFail($id);
         $data = $request->validate(['license' => ['nullable', Rule::in(Cart::LICENSES)]]);
 
+        if ($request->user() && $request->user()->isAdmin()) {
+            return back()->with('status', 'Admin accounts cannot purchase artworks. Use a buyer account.');
+        }
         // Signed-in buyers cannot add their own work, or something they already own or have an open order for.
         if ($user = $request->user()) {
             if ($message = $this->blockedReason($user, $artwork)) {
@@ -48,6 +51,9 @@ class CartController extends Controller
                 ->with('status', 'Please log in to check out.');
         }
 
+        if ($user->isAdmin()) {
+            return redirect()->route('cart')->with('status', 'Admin accounts cannot purchase artworks. Use a buyer account.');
+        }
         $items = Cart::items();
         if ($items->isEmpty()) {
             return redirect()->route('cart')->with('status', 'Your cart is empty.');

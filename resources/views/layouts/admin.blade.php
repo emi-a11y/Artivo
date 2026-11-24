@@ -54,6 +54,8 @@
     <script src="{{ asset('js/admin.js') }}"></script>
     <script src="{{ asset('js/preview-maker.js') }}"></script>
     <script src="{{ asset('js/ui-polish.js') }}" defer></script>
+    <script src="{{ asset('js/confirm-modal.js') }}" defer></script>
+    <script src="{{ asset('js/single-submit.js') }}"></script>
 </body>
 
 </html>

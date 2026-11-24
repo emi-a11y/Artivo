@@ -52,14 +52,18 @@
                 <hr>
                 <p class="detail-price my-3">₱{{ number_format($art->price, 2) }}</p>
 
-                <form action="{{ route('cart.add', $art->id) }}" method="post">
-                    @csrf
+                @if (auth()->check() && auth()->user()->isAdmin())
+                    <div class="alert alert-secondary small mb-3">Admin accounts can't purchase artworks.</div>
+                @else
+                    <form action="{{ route('cart.add', $art->id) }}" method="post">
+                        @csrf
 
-                    <div class="d-grid gap-2 mb-3">
-                        <button type="submit" class="btn btn-primary py-2">Add to Cart</button>
-                        <button type="submit" name="buy" value="1" class="btn btn-outline-dark py-2">Buy Now</button>
-                    </div>
-                </form>
+                        <div class="d-grid gap-2 mb-3">
+                            <button type="submit" class="btn btn-primary py-2">Add to Cart</button>
+                            <button type="submit" name="buy" value="1" class="btn btn-outline-dark py-2">Buy Now</button>
+                        </div>
+                    </form>
+                @endif
                 <form action="{{ route('wishlist.toggle', $art->id) }}" method="post" class="mb-4">
                     @csrf
                     <button type="submit"

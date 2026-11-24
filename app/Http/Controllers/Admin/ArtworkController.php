@@ -38,7 +38,7 @@ class ArtworkController extends Controller
 
     public function store(Request $request)
     {
-        $data = $this->withImage($request, $this->validated($request));
+        $data = $this->withImage($request, $this->validated($request, true));
         $artwork = Artwork::create($data);
 
         return redirect()->route('admin.artworks')->with('status', "\"{$artwork->title}\" was added.");
@@ -56,28 +56,31 @@ class ArtworkController extends Controller
     public function destroy(Artwork $artwork)
     {
         $title = $artwork->title;
-        ArtworkImages::delete($artwork);
+        ArtworkImages::delete($artwork); // remove the image files
+        $artwork->delete();              // remove the artwork row itself
 
         return redirect()->route('admin.artworks')->with('status', "\"{$title}\" was deleted.");
     }
 
-    private function validated(Request $request): array
+    private function validated(Request $request, bool $isNew = false): array
     {
         return $request->validateWithBag('artwork', [
             'title' => ['required', 'string', 'max:120'],
             'artist_id' => ['required', Rule::exists('users', 'id')->where('role', 'Artist')],
             'category_id' => ['required', 'exists:categories,id'],
             'genre_id' => ['required', 'exists:genres,id'],
-            'price' => ['required', 'numeric', 'min:0', 'max:9999'],
+            'price' => ['required', 'numeric', 'min:1', 'max:9999'],
             'status' => ['nullable', Rule::in(Artwork::STATUSES)],
             'description' => ['nullable', 'string', 'max:1000'],
-            // The image is optional on edit (keeps the current one) and on add (shows the placeholder).
-            'image' => ['nullable', 'file', 'image', 'mimes:jpg,jpeg,png,webp,gif', 'max:102400'], // 100 MB
+            // A new artwork must have an image. On edit it is optional (keeps the current one).
+            'image' => [$isNew ? 'required' : 'nullable', 'file', 'image', 'mimes:jpg,jpeg,png,webp,gif', 'max:102400'], // 100 MB
         ], [
             'image.uploaded' => 'The image could not be uploaded. It may be larger than the server limit (upload_max_filesize in php.ini).',
             'image.max' => 'The image must be 100 MB or smaller.',
             'image.image' => 'The file must be an image (JPG, PNG, WEBP or GIF).',
             'image.mimes' => 'The image must be a JPG, PNG, WEBP or GIF file.',
+            'image.required' => 'Please choose an artwork image.',
+            'price.min' => 'The price must be at least ₱1.00.',
         ]);
     }
 

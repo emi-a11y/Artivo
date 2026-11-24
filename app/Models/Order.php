@@ -37,12 +37,12 @@ class Order extends Model
     }
 
     /**
-     * Statuses the admin may switch this order to by hand. Payment is confirmed only on the
-     * Payments page (after checking the receipt), so only a Paid order can be moved on, to Refunded.
+     * Statuses the admin may switch this order to by hand. None: payment is confirmed only on the
+     * Payments page (after checking the receipt), and refunds are not handled in the system.
      */
     public function adminStatusChoices(): array
     {
-        return $this->status === 'Paid' ? ['Paid', 'Refunded'] : [];
+        return [];
     }
 
     public function paymentMethod(): BelongsTo

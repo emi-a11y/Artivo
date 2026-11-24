@@ -10,14 +10,15 @@
                 <div class="col-lg-6">
                     <p class="eyebrow mb-3">DIGITAL ART MARKETPLACE</p>
                     <h1 class="hero-title mb-3">Discover and collect original digital art</h1>
-                    <p class="hero-lead mb-4">Browse thousands of illustrations, anime art, photos and more from independent
-                        artists. Download instantly.</p>
+                    <p class="hero-lead mb-4">Browse many of our illustrations, be it pixel art, vectors and more from our
+                        artistic
+                        creators. Get yours now.</p>
                     <div class="d-flex flex-wrap gap-2">
                         <a href="{{ route('browse') }}" class="btn btn-primary px-4 py-2">Browse Artworks</a>
                     </div>
                 </div>
                 <div class="col-lg-6">
-                    <div class="art-ph art-ph--dark art-ph--hero">Hero Image</div>
+                    @include('partials.hero-mascot')
                 </div>
             </div>
         </div>
@@ -59,7 +60,12 @@
                 @foreach ($artists as $artist)
                     <div class="col">
                         <a href="{{ route('artists') }}" class="artist-link">
-                            <span class="avatar" aria-hidden="true"></span>
+                            <span class="avatar" aria-hidden="true">
+                                @if ($artist->photo_url)
+                                    <img src="{{ $artist->photo_url }}" alt="" loading="lazy" draggable="false"
+                                        style="width:100%;height:100%;object-fit:cover;object-position:50% 0%;border-radius:50%;display:block;">
+                                @endif
+                            </span>
                             <span class="d-block artist-name">{{ $artist->name }}</span>
                             <span class="d-block artist-count">{{ $artist->artworks_count }}
                                 {{ \Illuminate\Support\Str::plural('artwork', $artist->artworks_count) }}</span>

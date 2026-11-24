@@ -3,7 +3,7 @@
 Artivo is a digital-artwork marketplace built with **Laravel 10**, **Bootstrap 5** and **MySQL**. Artists upload and sell digital art; buyers browse, add to cart, pay by QR code and receive a receipt. Admins manage artworks, users, orders and payments.
 
 > Course project. Group members: **[Alon, Jeremi Joshua M.]**, **[Mendoza, Clyde Juris G.]**, **[Santos, Kurt David Andrei]**, **[Cadsawan, Dante Achilles]**
-> Documentation: see the Artivo System Manual submitted in Google Classroom. Figma: **[Figma link]**
+> Documentation: see the Artivo System Manual submitted in Google Classroom. Figma: **[[Figma link](https://github.com/emi-a11y/Artivo.git)]**
 
 ## Features
 

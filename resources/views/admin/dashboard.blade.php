@@ -15,84 +15,95 @@
     @endphp
 
     <div class="admin-dash">
-    <div class="row g-3 mb-4">
-        @foreach ($stats as $stat)
-            <div class="col-6 col-xl-3">
-                <div class="card admin-stat admin-stat--{{ $loop->index % 4 }} h-100">
-                    <div class="card-body">
-                        <span class="admin-stat-icon" aria-hidden="true">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">{!! $icons[$loop->index % 4] !!}</svg>
-                        </span>
-                        <div class="admin-stat-label">{{ $stat['label'] }}</div>
-                        <div class="admin-stat-value">{{ $stat['value'] }}</div>
-                        <div class="admin-stat-note">{{ $stat['note'] }}</div>
-                    </div>
-                </div>
-            </div>
-        @endforeach
-    </div>
-
-    <div class="row g-3 mb-3 admin-dash-mid">
-        <div class="col-12 col-xl-7">
-            <div class="card h-100">
-                <div class="card-body">
-                    <h2 class="admin-card-title">Sales Overview</h2>
-                    <div class="admin-chart" role="img" aria-label="Bar chart of paid sales for the last six months">
-                        @foreach ($chart as $bar)
-                            <div class="admin-bar-col" title="{{ $bar['label'] }}: ₱{{ number_format($bar['value'], 2) }}">
-                                <div class="admin-bar-track">
-                                    <span class="admin-bar-value" style="bottom: {{ $bar['height'] }}%">₱{{ number_format($bar['value'], 0) }}</span>
-                                    <span class="admin-bar" style="height: {{ $bar['height'] }}%"></span>
-                                </div>
-                                <span class="admin-bar-label">{{ $bar['label'] }}</span>
-                            </div>
-                        @endforeach
-                    </div>
-                    <div class="admin-chart-note">Paid orders per month, last six months</div>
-                </div>
-            </div>
-        </div>
-        <div class="col-12 col-xl-5">
-            <div class="card h-100">
-                <div class="card-body">
-                    <h2 class="admin-card-title">Top Selling Artworks</h2>
-                    <ul class="list-unstyled admin-top mb-0">
-                        @forelse ($topSelling as $art)
-                            <li>
-                                <span class="admin-rank admin-rank--{{ $loop->iteration }}" aria-hidden="true">{{ $loop->iteration }}</span>
-                                @if ($art->image_url)<img src="{{ $art->image_url }}" alt="" class="admin-thumb admin-thumb--img" loading="lazy">@else<span class="art-ph admin-thumb" aria-hidden="true"></span>@endif
-                                <span class="admin-top-text"><strong>{{ $art->title }}</strong><small>{{ $art->artist->name }}</small></span>
-                                <span class="admin-top-sales">{{ $art->order_items_count }} {{ \Illuminate\Support\Str::plural('sale', $art->order_items_count) }}</span>
-                            </li>
-                        @empty
-                            <li class="text-muted">No sales yet.</li>
-                        @endforelse
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="row g-3 admin-dash-last">
-        <div class="col-12">
-            <div class="card h-100">
-                <div class="card-body" id="recentOrders">
-                    <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-3">
-                        <h2 class="admin-card-title mb-0">Recent Orders</h2>
-                        <div class="d-flex align-items-center gap-3 flex-wrap">
-                            <div class="admin-pills" role="group" aria-label="Filter recent orders by status">
-                                <button type="button" class="admin-pill is-active" data-filter="all" aria-pressed="true">All <span>{{ $recent->count() }}</span></button>
-                                @foreach (['Paid', 'Pending', 'Refunded'] as $s)
-                                    <button type="button" class="admin-pill" data-filter="{{ $s }}" aria-pressed="false">{{ $s }} <span>{{ $recent->where('status', $s)->count() }}</span></button>
-                                @endforeach
-                            </div>
-                            <a class="admin-link" href="{{ route('admin.orders') }}">View all</a>
+        <div class="row g-3 mb-4">
+            @foreach ($stats as $stat)
+                <div class="col-6 col-xl-3">
+                    <div class="card admin-stat admin-stat--{{ $loop->index % 4 }} h-100">
+                        <div class="card-body">
+                            <span class="admin-stat-icon" aria-hidden="true">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="1.8" stroke-linecap="round"
+                                    stroke-linejoin="round">{!! $icons[$loop->index % 4] !!}</svg>
+                            </span>
+                            <div class="admin-stat-label">{{ $stat['label'] }}</div>
+                            <div class="admin-stat-value">{{ $stat['value'] }}</div>
+                            <div class="admin-stat-note">{{ $stat['note'] }}</div>
                         </div>
                     </div>
-                    @include('admin.partials.orders-table', ['orders' => $recentOrders, 'editable' => false, 'filterable' => true])
+                </div>
+            @endforeach
+        </div>
+
+        <div class="row g-3 mb-3 admin-dash-mid">
+            <div class="col-12 col-xl-7">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <h2 class="admin-card-title">Sales Overview</h2>
+                        <div class="admin-chart" role="img" aria-label="Bar chart of paid sales for the last six months">
+                            @foreach ($chart as $bar)
+                                <div class="admin-bar-col" title="{{ $bar['label'] }}: ₱{{ number_format($bar['value'], 2) }}">
+                                    <div class="admin-bar-track">
+                                        <span class="admin-bar-value"
+                                            style="bottom: {{ $bar['height'] }}%">₱{{ number_format($bar['value'], 0) }}</span>
+                                        <span class="admin-bar" style="height: {{ $bar['height'] }}%"></span>
+                                    </div>
+                                    <span class="admin-bar-label">{{ $bar['label'] }}</span>
+                                </div>
+                            @endforeach
+                        </div>
+                        <div class="admin-chart-note">Paid orders per month, last six months</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-xl-5">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <h2 class="admin-card-title">Top Selling Artworks</h2>
+                        <ul class="list-unstyled admin-top mb-0">
+                            @forelse ($topSelling as $art)
+                                <li>
+                                    <span class="admin-rank admin-rank--{{ $loop->iteration }}"
+                                        aria-hidden="true">{{ $loop->iteration }}</span>
+                                    @if ($art->image_url)<img src="{{ $art->image_url }}" alt=""
+                                    class="admin-thumb admin-thumb--img" loading="lazy">@else<span
+                                        class="art-ph admin-thumb" aria-hidden="true"></span>@endif
+                                    <span
+                                        class="admin-top-text"><strong>{{ $art->title }}</strong><small>{{ $art->artist->name }}</small></span>
+                                    <span class="admin-top-sales">{{ $art->order_items_count }}
+                                        {{ \Illuminate\Support\Str::plural('sale', $art->order_items_count) }}</span>
+                                </li>
+                            @empty
+                                <li class="text-muted">No sales yet.</li>
+                            @endforelse
+                        </ul>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
+        <div class="row g-3 admin-dash-last">
+            <div class="col-12">
+                <div class="card h-100">
+                    <div class="card-body" id="recentOrders">
+                        <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-3">
+                            <h2 class="admin-card-title mb-0">Recent Orders</h2>
+                            <div class="d-flex align-items-center gap-3 flex-wrap">
+                                <div class="admin-pills" role="group" aria-label="Filter recent orders by status">
+                                    <button type="button" class="admin-pill is-active" data-filter="all"
+                                        aria-pressed="true">All <span>{{ $recent->count() }}</span></button>
+                                    @foreach (['Paid', 'Pending'] as $s)
+                                        <button type="button" class="admin-pill" data-filter="{{ $s }}"
+                                            aria-pressed="false">{{ $s }}
+                                            <span>{{ $recent->where('status', $s)->count() }}</span></button>
+                                    @endforeach
+                                </div>
+                                <a class="admin-link" href="{{ route('admin.orders') }}">View all</a>
+                            </div>
+                        </div>
+                        @include('admin.partials.orders-table', ['orders' => $recentOrders, 'editable' => false, 'filterable' => true])
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <script>

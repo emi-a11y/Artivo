@@ -49,7 +49,7 @@ class SettingsController extends Controller
             'current_password.required' => 'Enter your current password.',
             'current_password.current_password' => 'The current password is not correct.',
             'password.required' => 'Enter a new password.',
-            'password.min' => 'The new password must be at least 8 characters.',
+            'password.min' => 'The new password must be at least 12 characters.',
             'password.regex' => 'The new password needs at least one letter and one number.',
             'password.confirmed' => 'The two new passwords do not match.',
             'password.different' => 'The new password must be different from the current one.',

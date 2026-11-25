@@ -51,7 +51,7 @@ class PasswordResetController extends Controller
             'email' => ['required', 'email'],
             'password' => ['required', 'string', \Illuminate\Validation\Rules\Password::min(12)->letters()->mixedCase()->numbers()->symbols(), 'max:72', 'confirmed'],
         ], [
-            'password.min' => 'Use at least 6 characters.',
+            'password.min' => 'Use at least 12 characters.',
             'password.confirmed' => 'The two passwords do not match.',
         ]);
 

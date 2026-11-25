@@ -90,7 +90,7 @@
                                 <div class="admin-pills" role="group" aria-label="Filter recent orders by status">
                                     <button type="button" class="admin-pill is-active" data-filter="all"
                                         aria-pressed="true">All <span>{{ $recent->count() }}</span></button>
-                                    @foreach (['Paid', 'Pending'] as $s)
+                                    @foreach (['Paid', 'Pending', 'Cancelled'] as $s)
                                         <button type="button" class="admin-pill" data-filter="{{ $s }}"
                                             aria-pressed="false">{{ $s }}
                                             <span>{{ $recent->where('status', $s)->count() }}</span></button>

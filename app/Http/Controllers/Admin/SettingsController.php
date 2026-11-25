@@ -44,7 +44,7 @@ class SettingsController extends Controller
     {
         $data = $request->validateWithBag('password', [
             'current_password' => ['required', 'current_password'],
-            'password' => ['required', 'string', 'min:8', 'max:72', 'regex:/[A-Za-z]/', 'regex:/\d/', 'confirmed', 'different:current_password'],
+            'password' => ['required', 'string', \Illuminate\Validation\Rules\Password::min(12)->letters()->mixedCase()->numbers()->symbols(), 'max:72', 'confirmed', 'different:current_password'],
         ], [
             'current_password.required' => 'Enter your current password.',
             'current_password.current_password' => 'The current password is not correct.',

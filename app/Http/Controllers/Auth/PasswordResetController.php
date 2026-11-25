@@ -49,7 +49,7 @@ class PasswordResetController extends Controller
         $data = $request->validate([
             'token' => ['required'],
             'email' => ['required', 'email'],
-            'password' => ['required', 'string', 'min:6', 'confirmed'],
+            'password' => ['required', 'string', \Illuminate\Validation\Rules\Password::min(12)->letters()->mixedCase()->numbers()->symbols(), 'max:72', 'confirmed'],
         ], [
             'password.min' => 'Use at least 6 characters.',
             'password.confirmed' => 'The two passwords do not match.',

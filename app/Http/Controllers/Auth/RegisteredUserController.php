@@ -35,7 +35,7 @@ class RegisteredUserController extends Controller
             'email.email' => 'Please enter a valid email address.',
             'email.unique' => 'That email is already registered. Try logging in instead.',
             'password.required' => 'Please choose a password.',
-            'password.min' => 'Your password must be at least 6 characters.',
+            'password' => ['required', 'string', \Illuminate\Validation\Rules\Password::min(12)->letters()->mixedCase()->numbers()->symbols(), 'max:72', 'confirmed'],
             'password.confirmed' => 'The passwords do not match.',
         ]);
 

@@ -377,3 +377,27 @@ a.art-ph--tile { transition: transform 0.2s ease, box-shadow 0.2s ease, backgrou
         scroll-behavior: auto !important;
     }
 }
+
+/* Cart: Remove button */
+.cart-remove {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.3rem 0.75rem;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #5c5c5c;
+    background: #fff;
+    border: 1px solid rgba(26, 26, 26, 0.18);
+    border-radius: 999px;
+    cursor: pointer;
+    transition: color 0.15s ease, background 0.15s ease, border-color 0.15s ease, transform 0.1s ease;
+}
+.cart-remove:hover {
+    color: #c0392b;
+    background: #fdecec;
+    border-color: rgba(192, 57, 43, 0.45);
+}
+.cart-remove:active { transform: scale(0.96); }
+.cart-remove:focus-visible { outline: 3px solid rgba(255, 98, 0, 0.45); outline-offset: 2px; }
+.cart-remove[disabled] { opacity: 0.6; cursor: wait; }

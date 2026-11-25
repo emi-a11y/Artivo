@@ -43,7 +43,7 @@ class CartController extends Controller
         return redirect()->route('cart')->with('status', 'Item removed from your cart.');
     }
 
-    public function checkout()
+    public function checkout(Request $request)
     {
         $user = auth()->user();
         if (! $user) {
@@ -54,9 +54,10 @@ class CartController extends Controller
         if ($user->isAdmin()) {
             return redirect()->route('cart')->with('status', 'Admin accounts cannot purchase artworks. Use a buyer account.');
         }
-        $items = Cart::items();
+        $selected = array_map('intval', (array) $request->input('selected', []));
+        $items = Cart::items()->whereIn('id', $selected)->values();
         if ($items->isEmpty()) {
-            return redirect()->route('cart')->with('status', 'Your cart is empty.');
+            return redirect()->route('cart')->with('status', 'Select at least one artwork to check out.');
         }
 
         // The cart may have been filled before the artwork was bought, so check every item again.
@@ -79,10 +80,32 @@ class CartController extends Controller
             $items->map(fn (Artwork $a) => ['artwork' => $a, 'license' => $a->license])->all(),
             'Pending'
         ));
-        Cart::clear();
+        foreach ($items as $art) {
+            Cart::remove($art->id);
+        }
 
         return redirect()->route('orders.pay', $order)
             ->with('status', "Order {$order->code} created. Scan the QR code to pay, then send the receipt.");
+    }
+
+    public function removeSelected(Request $request)
+    {
+        $ids = array_map('intval', (array) $request->input('selected', []));
+        foreach ($ids as $id) {
+            Cart::remove($id);
+        }
+        $n = count($ids);
+
+        return redirect()->route('cart')->with('status', $n === 0
+            ? 'Select at least one item to remove.'
+            : ($n === 1 ? '1 item was removed from your cart.' : "{$n} items were removed from your cart."));
+    }
+
+    public function clear()
+    {
+        Cart::clear();
+
+        return redirect()->route('cart')->with('status', 'Your cart is now empty.');
     }
 
     /** A short explanation when the buyer should not get this artwork again, or null when it is fine. */

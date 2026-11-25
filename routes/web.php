@@ -38,6 +38,8 @@ Route::get('/page/{slug}', [PageController::class, 'page'])->name('page.show');
 
 Route::post('/cart/add/{id}', [CartController::class, 'add'])->whereNumber('id')->name('cart.add');
 Route::delete('/cart/{id}', [CartController::class, 'remove'])->whereNumber('id')->name('cart.remove');
+Route::post('/cart/remove-selected', [CartController::class, 'removeSelected'])->name('cart.removeSelected');
+Route::post('/cart/clear', [CartController::class, 'clear'])->name('cart.clear');
 Route::post('/checkout', [CartController::class, 'checkout'])->name('checkout');
 Route::post('/wishlist/{id}', [WishlistController::class, 'toggle'])->whereNumber('id')->name('wishlist.toggle');
 Route::get('/wishlist', [WishlistController::class, 'index'])->middleware('auth')->name('wishlist');

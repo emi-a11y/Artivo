@@ -47,7 +47,6 @@ class DatabaseSeeder extends Seeder
 
         $formats = [
             'Illustration' => ['PNG, PSD', '4000 x 4000 px'],
-            'Photography' => ['JPG, RAW', '6000 x 4000 px'],
             'Pixel Art' => ['PNG, ASE', '1024 x 1024 px'],
             'Vectors' => ['SVG, AI', 'Scalable vector'],
         ];

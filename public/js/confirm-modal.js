@@ -28,6 +28,8 @@
     var TRASH = '<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h16M10 11v6M14 11v6M6 7l1 12h10l1-12M9 7V4h6v3"/></svg>';
     var IMAGE = '<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="9" cy="10" r="1.6"/><path d="M21 16l-5-5-8 8"/></svg>';
 
+    var XCIRCLE = '<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M9 9l6 6M15 9l-6 6"/></svg>';
+
     function esc(s) { var d = document.createElement('div'); d.textContent = s; return d.innerHTML; }
 
     function parse(form) {
@@ -35,6 +37,14 @@
         var m = code.match(/confirm\(\s*(['"])([\s\S]*)\1\s*\)/);
         if (!m) { return null; }
         var msg = m[2].replace(/\\(['"\\])/g, '$1');
+        var c = msg.match(/^\s*Cancel order\s+(\S+?)\?/i);
+        if (c) {
+            return {
+                verb: 'Yes, cancel order', busy: 'Cancelling\u2026', keep: 'Keep order', soft: true, icon: XCIRCLE,
+                title: 'Cancel order ' + c[1] + '?',
+                text: 'The order will be closed and cannot be reopened. You can place a new order any time.'
+            };
+        }
         var verb = /^\s*remove/i.test(msg) ? 'Remove' : 'Delete';
         var q = msg.match(/^\s*(?:Delete|Remove)\s+([\s\S]+?)\?\s*([\s\S]*)$/i);
         var subject = q ? q[1].replace(/^the picture of\s+/i, '').replace(/^["\u201c']|["\u201d']$/g, '') : '';
@@ -54,11 +64,11 @@
         ov.className = 'cm-overlay';
         ov.innerHTML =
             '<div class="cm-card" role="alertdialog" aria-modal="true" aria-labelledby="cmTitle" aria-describedby="cmText">' +
-            '<div class="cm-icon' + (info.soft ? ' is-soft' : '') + '">' + (info.soft ? IMAGE : TRASH) + '</div>' +
+            '<div class="cm-icon' + (info.soft ? ' is-soft' : '') + '">' + (info.icon || (info.soft ? IMAGE : TRASH)) + '</div>' +
             '<h3 class="cm-title" id="cmTitle">' + esc(info.title) + '</h3>' +
             '<p class="cm-text" id="cmText">' + esc(info.text) + '</p>' +
             '<div class="cm-actions">' +
-            '<button type="button" class="cm-btn cm-cancel">Cancel</button>' +
+            '<button type="button" class="cm-btn cm-cancel">' + (info.keep || 'Cancel') + '</button>' +
             '<button type="button" class="cm-btn cm-ok' + (info.soft ? ' is-soft' : '') + '">' + info.verb + '</button>' +
             '</div></div>';
         document.body.appendChild(ov);
@@ -82,7 +92,7 @@
         ov.addEventListener('mousedown', function (e) { if (e.target === ov) { close(); } });
         ok.addEventListener('click', function () {
             ok.disabled = true; cancel.disabled = true;
-            ok.textContent = info.verb === 'Delete' ? 'Deleting\u2026' : 'Removing\u2026';
+            ok.textContent = info.busy || (info.verb === 'Delete' ? 'Deleting\u2026' : 'Removing\u2026');
             onConfirm();
         });
     }

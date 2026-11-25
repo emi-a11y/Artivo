@@ -28,7 +28,7 @@ class RegisteredUserController extends Controller
         $data = $request->validate([
             'name' => ['required', 'string', 'max:80'],
             'email' => ['required', 'email', 'max:120', 'unique:users,email'],
-            'password' => ['required', 'string', 'min:6', 'confirmed'],
+            'password' => ['required', 'string', \Illuminate\Validation\Rules\Password::min(12)->letters()->mixedCase()->numbers()->symbols(), 'max:72', 'confirmed'],
         ], [
             'name.required' => 'Please enter your name.',
             'email.required' => 'Please enter your email.',

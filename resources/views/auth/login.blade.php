@@ -164,7 +164,7 @@
                                     minlength="6" autocomplete="new-password" required>
                             </div>
                         </div>
-                        <p class="form-text mb-3">Use at least 6 characters.</p>
+                        <p class="form-text mb-3">Use at least 12 characters.</p>
                         <button type="submit" class="btn btn-primary w-100 py-2">Create account</button>
                     </form>
                     <p class="auth-switch">Already have an account? <a href="{{ route('login') }}">Log in</a></p>
